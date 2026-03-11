@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IUS DRRP Product Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#07070a;color:#d0d0cc;font-family:'Rajdhani',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;}
+.logo{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;letter-spacing:.5em;color:rgba(255,255,255,.55);margin-bottom:8px;-webkit-text-stroke:0.5px rgba(255,255,255,.3)}
+.sub{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.4em;color:rgba(255,255,255,.2);margin-bottom:60px}
+.cards{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;max-width:780px}
+.card{border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:32px 28px;width:320px;text-decoration:none;color:inherit;transition:all .3s ease;position:relative;overflow:hidden;background:rgba(255,255,255,.02)}
+.card::before{content:'';position:absolute;inset:0;opacity:0;background:linear-gradient(135deg,rgba(255,255,255,.04),transparent);transition:opacity .3s}
+.card:hover{border-color:rgba(255,255,255,.18);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.card:hover::before{opacity:1}
+.card-tag{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.3em;color:rgba(255,255,255,.25);margin-bottom:12px}
+.card-title{font-size:20px;font-weight:600;letter-spacing:.05em;margin-bottom:8px}
+.card-desc{font-size:12px;font-weight:300;color:rgba(255,255,255,.4);line-height:1.7;letter-spacing:.04em;margin-bottom:20px}
+.card-cta{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.2em;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.15);padding:6px 14px;border-radius:3px;display:inline-block;transition:all .2s}
+.card:hover .card-cta{color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.35)}
+.card.desktop .card-tag{color:rgba(48,232,255,.4)}
+.card.desktop{border-color:rgba(48,232,255,.08)}
+.card.desktop:hover{border-color:rgba(48,232,255,.25);box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 40px rgba(48,232,255,.05)}
+.card.portable .card-tag{color:rgba(255,176,32,.4)}
+.card.portable{border-color:rgba(255,176,32,.08)}
+.card.portable:hover{border-color:rgba(255,176,32,.25);box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 40px rgba(255,176,32,.05)}
+.footer{margin-top:60px;font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,255,255,.12);letter-spacing:.2em;text-align:center;line-height:2}
+</style>
+</head>
+<body>
+<div class="logo">IUS</div>
+<div class="sub">HI-RES AUDIO · OFFLINE RADIO · DIGITAL RECORDER</div>
+<div class="cards">
+  <a class="card desktop" href="ius-desktop.html">
+    <div class="card-tag">DESKTOP UNIT · MAINS POWERED</div>
+    <div class="card-title">IUS DRRP Desktop</div>
+    <div class="card-desc">Desktop recorder/playback workstation. HiFiBerry DAC+ ADC HAT, side speakers, top-firing spatial speaker concept, 1hr battery backup, manual 15-band physical EQ, offline FM/DAB, 5-track monitoring UI.</div>
+    <div class="card-cta">OPEN PROTOTYPE →</div>
+  </a>
+  <a class="card portable" href="ius-portable.html">
+    <div class="card-tag">PORTABLE UNIT · BATTERY</div>
+    <div class="card-title">IUS Portable</div>
+    <div class="card-desc">Portable hi-res player/recorder concept. Brushed metal, dual OLED displays, rotary knobs, offline FM/DAB radio, local playback.</div>
+    <div class="card-cta">OPEN PROTOTYPE →</div>
+  </a>
+</div>
+<div class="footer">
+  IUS · CONCEPT PROTOTYPE<br>
+  HiFiBerry DAC+ ADC · Raspberry Pi 4 · UK Concept Design
+</div>
+</body>
+</html>
