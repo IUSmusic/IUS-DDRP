@@ -1,10 +1,9 @@
-IUS DRRP Desktop
+IUS DRRP Desktop Demo
 https://iusmusic.github.io/IUS-DDRP/
 
 
 IUS DRRP Prototype Demo
 https://iusmusic.github.io/IUS-DRRP/
-
 Standalone HTML Preview:
 https://iusmusic.github.io/DRRPDEMO/
 
