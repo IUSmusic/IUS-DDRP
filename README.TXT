@@ -1,4 +1,13 @@
 IUS DRRP Desktop
+https://iusmusic.github.io/IUS-DDRP/
+
+
+IUS DRRP Prototype Demo
+https://iusmusic.github.io/IUS-DRRP/
+
+Standalone HTML Preview:
+https://iusmusic.github.io/DRRPDEMO/
+
 
 IUS DRRP Desktop is a mains-powered high-fidelity playback and recording device developed as the desktop version of the IUS DRRP concept. It is designed for studio, home, and creative audio use, combining tactile hardware control, upgraded audio architecture, visible interface feedback, and offline-first operation.
 
