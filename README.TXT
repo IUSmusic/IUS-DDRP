@@ -210,10 +210,38 @@ IUS DRRP Desktop is currently in concept and prototype development stage.
 
 This version represents the desktop flagship direction of the DRRP system and is intended to serve as the more advanced hardware platform for future development, demonstration, and possible small-batch production.
 
-MIT
+MIT License
 
-COPYRIGHT 2026 PEZHMAN FARHANGI
+Copyright (c) 2026 Pezhman Farhangi
+I/US Music
 
-Author
-I/US
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Trademark and Brand Notice
+
+“IUS” and “I/US Music®” are proprietary brand identifiers of I/US Music®.
+
+The source code in this repository is licensed separately under the MIT License.
+That license does not grant any right to use the IUS name, the I/US Music®
+name, official logos, visual identity, artwork, images, music, or other brand
+assets included in or referenced by this repository.
+
+All such rights are reserved. Any use of protected brand features requires
+prior written permission from I/US Music®.
 
