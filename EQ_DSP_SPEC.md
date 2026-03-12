@@ -1,8 +1,5 @@
 # EQ DSP specification
 
-## Purpose
-
-Define the **truth model** behind the demo so the interface is not just visual styling.
 
 ## 1) Band layout
 
@@ -35,51 +32,7 @@ The front-end graph is calculated by:
 3. multiplying magnitudes across all active bands
 4. converting the summed magnitude to dB for display
 
-## 4) Routing policy
-
-The repo now makes routing explicit.
-
-### Playback path
-- EQ can be enabled / disabled
-- Intended to represent local player playback
-
-### Radio path
-- EQ can be enabled / disabled
-- Intended to represent offline FM / DAB input path
-
-### Monitor path
-- EQ can be enabled / disabled
-- Intended to represent the live monitor bus during record
-
-### Record print policy
-Two policies are supported in the demo state model:
-
-- **Metadata** — record dry audio, store EQ settings as metadata / project state
-- **Printed** — write EQ directly into recorded output
-
-Recommended builder default: **Metadata**
-
-## 5) Graph behaviour
-
-The graph must remain:
-
-- log-scaled in frequency
-- clearly marked at useful dB intervals
-- readable at both flat and extreme settings
-- technically restrained rather than decorative
-
-The graph should never imply more precision than the DSP model behind it.
-
-## 6) Acceptance criteria
-
-- Moving any slider changes the graph immediately
-- Band readout always shows exact frequency and gain
-- Flat preset returns the graph to unity
-- Mode switching does not reset EQ values
-- The track overlay appears when EQ is touched
-- Routing state is visible in the interface
-
-## 7) What this demo does not yet do
+## What this demo does not yet do
 
 - no real-time audio filtering
 - no convolution / speaker correction
