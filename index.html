@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IUS DDRP Desktop Demo</title>
+  <meta name="description" content="IUS DDRP Desktop Demo: browser-based hi-fi player, internet radio monitor, multitrack recorder, EQ, and detailed audio analysis visualizer." />
+  <meta property="og:title" content="IUS DDRP Desktop Demo" />
+  <meta property="og:description" content="Browser-based hi-fi player, radio monitor, multitrack recorder, EQ, and detailed audio analysis visualizer." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/logo.png" />
+  <meta name="theme-color" content="#0b0d10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Skip to main content</a>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">IUS Audio Technology Concept</p>
+        <h1 class="brand">I U S &nbsp; D D R P</h1>
+        <div class="sub">Desktop Digital Recorder · Radio Monitor · Player · Multitrack Browser Prototype</div>
+      </div>
+      <div class="status-cluster" aria-live="polite">
+        <span id="statusBadge" class="status-badge amber">PLAYER</span>
+        <span id="statusText" class="status-text">Ready</span>
+      </div>
+    </header>
+
+    <main id="mainContent" class="layout">
+      <section class="panel hero-panel" aria-labelledby="mainTransportHeading">
+        <div class="hero-top">
+          <div class="mode-tabs" role="tablist" aria-label="Operating mode">
+            <button class="mode-tab active" type="button" role="tab" aria-selected="true" data-mode="player">Player</button>
+            <button class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="radio">Radio</button>
+            <button class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="record">Record</button>
+          </div>
+          <button id="toggleTracks" class="ghost-btn" type="button" aria-pressed="true">Hide track mixer</button>
+        </div>
+
+        <h2 id="mainTransportHeading" class="sr-only">Main transport and analysis view</h2>
+
+        <div class="display-wrap">
+          <canvas id="spectrumCanvas" width="980" height="280" aria-label="Detailed audio analysis visualizer"></canvas>
+          <section id="overlayTracks" class="tracks-overlay show" aria-label="Track mixer overlay"></section>
+          <section id="analysisPanel" class="analysis-panel" aria-label="Audio character analysis">
+            <div class="analysis-grid">
+              <div class="analysis-card">
+                <span>Spectral tilt</span>
+                <strong id="analysisTilt">Balanced</strong>
+              </div>
+              <div class="analysis-card">
+                <span>Energy</span>
+                <strong id="analysisEnergy">Idle</strong>
+              </div>
+              <div class="analysis-card">
+                <span>Dynamics</span>
+                <strong id="analysisDynamics">Open</strong>
+              </div>
+              <div class="analysis-card">
+                <span>Focus band</span>
+                <strong id="analysisFocus">Midrange</strong>
+              </div>
+            </div>
+            <div id="analysisNarrative" class="analysis-narrative">Analyzer waiting for signal.</div>
+          </section>
+          <section id="radioPanel" class="radio-panel hidden" aria-label="Radio station details">
+            <div class="radio-line"><span>Station</span><strong id="radioName">BBC Radio 6 Music</strong></div>
+            <div class="radio-line"><span>Genre</span><strong id="radioGenre">Alternative</strong></div>
+            <div class="radio-line"><span>Country</span><strong id="radioCountry">UK</strong></div>
+            <div class="radio-line"><span>Stream</span><strong id="radioFormat">MP3/AAC</strong></div>
+            <div class="radio-line"><span>Signal</span><strong id="radioSignal">Standby</strong></div>
+          </section>
+          <section id="recordPanel" class="record-panel hidden" aria-label="Recording details">
+            <div class="rec-dot"></div>
+            <div>
+              <div class="rec-title">Multitrack browser capture</div>
+              <div id="recordHint" class="rec-hint">Grant microphone access, arm the tracks you want, then press record.</div>
+            </div>
+          </section>
+        </div>
+
+        <div class="transport" aria-label="Transport controls">
+          <button id="prevBtn" class="transport-btn" type="button" aria-label="Previous track">⏮</button>
+          <button id="playBtn" class="transport-btn play" type="button" aria-label="Play">▶</button>
+          <button id="pauseBtn" class="transport-btn" type="button" aria-label="Pause">⏸</button>
+          <button id="stopBtn" class="transport-btn" type="button" aria-label="Stop">⏹</button>
+          <button id="nextBtn" class="transport-btn" type="button" aria-label="Next track">⏭</button>
+          <button id="scanPrevBtn" class="transport-btn radio-only" type="button" aria-label="Previous station">◀ Scan</button>
+          <button id="scanNextBtn" class="transport-btn radio-only" type="button" aria-label="Next station">Scan ▶</button>
+          <button id="recordBtn" class="transport-btn record-only" type="button" aria-label="Start recording armed tracks">● Record armed</button>
+          <button id="recordStopBtn" class="transport-btn record-only" type="button" aria-label="Stop recording and save tracks">■ Stop & save</button>
+        </div>
+
+        <div class="meta-grid">
+          <div>
+            <div class="meta-label">Now playing</div>
+            <div id="trackTitle" class="meta-value">sample01.mp3</div>
+            <div id="trackArtist" class="meta-sub">Local demo track</div>
+          </div>
+          <div>
+            <div class="meta-label">Source</div>
+            <div id="sourceLabel" class="meta-value">Local library</div>
+            <div id="formatLabel" class="meta-sub">Web Audio chain active</div>
+          </div>
+          <div>
+            <div class="meta-label">Time</div>
+            <div id="timeText" class="meta-value mono">00:00 / 00:00</div>
+            <input id="seekBar" type="range" min="0" max="1000" value="0" aria-label="Seek playback position" />
+          </div>
+          <div>
+            <div class="meta-label">Output</div>
+            <div class="meta-value mono"><span id="volumeText">72</span>%</div>
+            <input id="volumeKnob" type="range" min="0" max="100" value="72" aria-label="Master output volume" />
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel right-panel" aria-label="Library, EQ, and station controls">
+        <section>
+          <div class="section-head">
+            <h2>Library</h2>
+            <span class="section-note">3 local placeholders</span>
+          </div>
+          <div id="playlist" class="playlist" role="list"></div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>EQ</h2>
+            <label class="sr-only" for="presetSelect">EQ preset</label>
+            <select id="presetSelect" aria-label="EQ preset selector">
+              <option value="flat">Flat</option>
+              <option value="bass">Bass +</option>
+              <option value="vocal">Vocal</option>
+              <option value="air">Air</option>
+              <option value="warm">Warm</option>
+              <option value="studio">Studio</option>
+            </select>
+          </div>
+          <canvas id="eqCanvas" width="360" height="170" aria-label="EQ response graph"></canvas>
+          <div id="eqSliders" class="eq-sliders" aria-label="EQ band controls"></div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>Radio</h2>
+            <span class="section-note">Free internet streams</span>
+          </div>
+          <p class="helper-copy">This browser prototype monitors internet radio streams to simulate a radio workflow. It is not direct FM or DAB+ hardware decoding.</p>
+          <div id="stationList" class="station-list" role="list"></div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <h2>Workflow notes</h2>
+            <span class="section-note">Current browser limits</span>
+          </div>
+          <div class="notes-card">
+            Armed tracks record as separate browser files from the same microphone input path. For real multichannel hardware input, you would later map each track to a dedicated interface channel.
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <audio id="playerAudio" preload="metadata" crossorigin="anonymous"></audio>
+  <audio id="radioAudio" preload="none" crossorigin="anonymous"></audio>
+
+  <script src="app.js"></script>
+</body>
+</html>
