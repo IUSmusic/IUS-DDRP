@@ -5,9 +5,8 @@ I set out to create this device after realizing there wasn’t a truly simple re
 With that in mind, I began prototyping a system inspired by the character and tactile appeal of vintage audio equipment, but designed with modern, ultra-high-quality performance in mind. A portable version is also currently in development.
 
 
-12 MARCH 2026
 ## Update:
-
+12 MARCH 2026
 - Replaced the text-only preview with a working demo.
 - Added a real front-end EQ model with 15 bands and plotted response.
 - Added presets, routing controls, mode switching, and a track overlay.
