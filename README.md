@@ -1,16 +1,16 @@
 12 MARCH 2026
-Update:
+## Update:
 
 - Replaced the text-only preview with a working demo.
 - Added a real front-end EQ model with 15 bands and plotted response.
 - Added presets, routing controls, mode switching, and a track overlay.
 - Added builder docs, BOM update, EQ DSP spec, and implementation plan.
 
-IUS DRRP Desktop Demo
+## IUS DRRP Desktop Demo
 https://iusmusic.github.io/IUS-DDRP/
 
 
-IUS DRRP Prototype Demo
+## IUS DRRP Prototype Demo
 https://iusmusic.github.io/IUS-DRRP/
 Standalone HTML Preview:
 https://iusmusic.github.io/DRRPDEMO/
