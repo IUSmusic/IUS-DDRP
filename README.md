@@ -2,11 +2,11 @@
 
 ## Logic:
 I set out to create this device after realizing there wasn’t a truly simple recorder/playback unit that combined high-resolution audio, straightforward multitrack capability, and a hands-on physical EQ section. Maybe that sounds old-fashioned but I’ve always been drawn to equipment that feels direct and human.
+With that in mind, I began prototyping a system inspired by the character and tactile appeal of vintage audio equipment, but designed with modern, ultra-high-quality performance in mind. A portable version is also currently in development.
+
 
 12 MARCH 2026
 ## Update:
-
-With that in mind, I began prototyping a system inspired by the character and tactile appeal of vintage audio equipment, but designed with modern, ultra-high-quality performance in mind. A portable version is also currently in development.
 
 - Replaced the text-only preview with a working demo.
 - Added a real front-end EQ model with 15 bands and plotted response.
