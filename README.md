@@ -1,6 +1,7 @@
 
 
-## I set out to create this device after realizing there wasn’t a truly simple recorder/playback unit that combined high-resolution audio, straightforward multitrack capability, and a hands-on physical EQ section. Maybe that sounds old-fashioned, but I’ve always believed the best tools are the ones that feel intuitive, immediate, and built around the way musicians actually work.
+## Logic:
+I set out to create this device after realizing there wasn’t a truly simple recorder/playback unit that combined high-resolution audio, straightforward multitrack capability, and a hands-on physical EQ section. Maybe that sounds old-fashioned, but I’ve always believed the best tools are the ones that feel intuitive, immediate, and built around the way musicians actually work.
 
 12 MARCH 2026
 ## Update:
