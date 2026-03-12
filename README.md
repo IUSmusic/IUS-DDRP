@@ -25,7 +25,7 @@ IUS DRRP Desktop
 
 
 
-Core Purpose
+## Core Purpose
 IUS DRRP Desktop is designed as a self-contained audio instrument for:
 
 - high-quality local playback
@@ -41,7 +41,7 @@ IUS DRRP Desktop is designed as a self-contained audio instrument for:
 - studio and home listening
 
 
-Main Characteristics
+## Main Characteristics
 
 - mains-powered desktop unit
 
@@ -63,7 +63,7 @@ Main Characteristics
 
 
 
-Audio Architecture
+## Audio Architecture
 
 The desktop version is based around an upgraded dedicated DAC/ADC system using a HiFiBerry DAC+ ADC HAT. The purpose of this architecture is to provide a cleaner and more reliable playback and recording path than standard onboard audio.
 
@@ -100,7 +100,7 @@ monitoring
 This track view is designed to give the user a more direct, hardware-based recording workflow without requiring a traditional software DAW interface for basic operations.
 
 
-Control System
+## Control System
 
 IUS DRRP Desktop uses tactile physical controls rather than touchscreen-first interaction.
 
@@ -217,10 +217,10 @@ IUS DRRP Desktop is currently in concept and prototype development stage.
 
 This version represents the desktop flagship direction of the DRRP system and is intended to serve as the more advanced hardware platform for future development, demonstration, and possible small-batch production.
 
-MIT License
+## MIT License
 
 
-Copyright (c) 2026 Pezhman Farhangi
+## Copyright (c) 2026 Pezhman Farhangi
 I/US Music
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -241,7 +241,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Trademark and Brand Notice
+## Trademark and Brand Notice
 
 “IUS” and “I/US Music®” are proprietary brand identifiers of I/US Music®.
 
