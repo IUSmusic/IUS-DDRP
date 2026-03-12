@@ -6,7 +6,7 @@
 - Added presets, routing controls, mode switching, and a track overlay.
 - Added builder docs, BOM update, EQ DSP spec, and implementation plan.
 
-## IUS DRRP Desktop Demo
+## IUS DDRP Demo
 https://iusmusic.github.io/IUS-DDRP/
 
 
