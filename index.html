@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IUS DRRP Desktop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════
+   RESET + TOKENS
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Housing */
+  --h-top:#e0e1e2; --h-mid:#cfd0d1; --h-dark:#b8b9ba; --h-edge:#9a9b9c;
+  --h-shadow:#777; --h-hi:rgba(255,255,255,.48);
+  /* Display */
+  --d-bg:#06080a; --d-dark:#0b0e11; --d-grid:rgba(255,255,255,.055);
+  --d-green:#3dff7a; --d-amber:#ffb020; --d-cyan:#22ddff;
+  --d-teal1:#1ef5b0; --d-teal2:#22b8ff;
+  --d-red:#ff2a3c; --d-white:#e8eeea;
+  /* Info panel */
+  --inf-bg:#f0f0ec; --inf-border:#c0c0b8;
+  /* Buttons */
+  --btn-hi:#d8d9da; --btn-mid:#bfc0c2; --btn-lo:#9a9b9d;
+  /* Fonts */
+  --f-serif:'Cormorant Garamond',serif;
+  --f-mono:'Share Tech Mono',monospace;
+  --f-ui:'Rajdhani',sans-serif;
+  /* EQ */
+  --eq-bg:#080a08; --eq-grid:rgba(255,255,255,.055);
+}
+html,body{
+  min-height:100%;background:#0d0d10;
+  font-family:var(--f-ui);color:#d0d0cc;
+  -webkit-font-smoothing:antialiased;
+}
+body{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:flex-start;
+  min-height:100vh;padding:36px 12px 60px;
+  background:radial-gradient(ellipse 80% 60% at 50% 35%,#161618 0%,#0a0a0c 100%);
+}
+/* grain */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;opacity:.35;
+  mix-blend-mode:overlay;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  background-size:200px;
+}
+
+/* ═══════════════════════════════════════════════
+   DEVICE SHELL
+═══════════════════════════════════════════════ */
+.device{
+  position:relative;z-index:10;
+  width:min(1180px,100%);
+  filter:
+    drop-shadow(0 30px 60px rgba(0,0,0,.8))
+    drop-shadow(0 6px 18px rgba(0,0,0,.5));
+  animation:unitIn .8s cubic-bezier(.16,1,.3,1) both;
+}
+
+/* Antenna */
+.antenna{
+  position:absolute;top:-52px;left:56px;
+  width:5px;height:54px;
+  background:linear-gradient(180deg,#b8b9ba,#ccc 40%,var(--h-mid) 100%);
+  border-radius:3px 3px 0 0;
+  box-shadow:1px 0 2px rgba(0,0,0,.28);
+  transform-origin:bottom center;
+}
+.antenna::before{
+  content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  width:9px;height:9px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#ddd,#888);
+  box-shadow:0 1px 4px rgba(0,0,0,.45);
+}
+.antenna-base{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:15px;height:7px;border-radius:2px;
+  background:linear-gradient(180deg,#bbb,var(--h-dark));
+}
+
+/* Main housing box */
+.housing{
+  border-radius:11px 11px 5px 5px;overflow:hidden;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.007) 3px,rgba(255,255,255,.007) 6px),
+    linear-gradient(180deg,var(--h-top) 0%,var(--h-mid) 18%,var(--h-dark) 60%,var(--h-edge) 100%);
+  box-shadow:
+    inset 0 2px 1px rgba(255,255,255,.48),
+    inset 0 -1px 1px rgba(0,0,0,.28),
+    inset 1px 0 1px rgba(255,255,255,.28),
+    inset -1px 0 1px rgba(255,255,255,.18);
+}
+
+/* ═══ TOP RAIL ═══ */
+.top-rail{
+  display:flex;align-items:center;
+  padding:9px 20px 7px;
+  border-bottom:1px solid rgba(0,0,0,.12);
+  gap:0;position:relative;
+}
+.top-rail-left{display:flex;align-items:center;gap:10px;min-width:180px}
+.screw{
+  width:11px;height:11px;border-radius:50%;flex-shrink:0;
+  background:radial-gradient(circle at 38% 32%,#dde,#aaa 45%,#666 100%);
+  box-shadow:0 1px 3px rgba(0,0,0,.5),inset 0 1px 1px rgba(255,255,255,.4);
+  position:relative;
+}
+.screw::after{
+  content:'';position:absolute;inset:3px;
+  border-top:1.5px solid rgba(0,0,0,.45);border-radius:50%;transform:rotate(-35deg);
+}
+.leds{display:flex;gap:5px;align-items:center}
+.led{
+  width:8px;height:8px;border-radius:50%;
+  background:#2a2c30;transition:all .35s ease;
+}
+.led.g{background:var(--d-green);box-shadow:0 0 8px var(--d-green);animation:ledBreathe 2.5s ease-in-out infinite}
+.led.a{background:var(--d-amber);box-shadow:0 0 8px var(--d-amber)}
+.led.r{background:var(--d-red);box-shadow:0 0 9px var(--d-red);animation:recBlink .85s ease-in-out infinite}
+
+.brand{
+  flex:1;text-align:center;
+  font-family:var(--f-serif);font-size:26px;font-weight:300;
+  letter-spacing:.5em;color:rgba(50,50,50,.75);
+  -webkit-text-stroke:.4px rgba(40,40,40,.5);
+  text-shadow:0 1px 0 rgba(255,255,255,.5);
+  user-select:none;
+}
+.top-rail-right{
+  display:flex;align-items:center;gap:10px;
+  min-width:180px;justify-content:flex-end;
+}
+.status-text{
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.18em;
+  color:rgba(0,0,0,.4);
+}
+.status-led{
+  width:10px;height:10px;border-radius:50%;
+  background:#2a2c30;transition:all .35s ease;
+}
+.status-led.on{background:var(--d-green);box-shadow:0 0 8px var(--d-green)}
+
+/* ═══ MAIN DISPLAY AREA ═══ */
+.display-area{
+  display:grid;
+  grid-template-columns:220px 1fr 94px;
+  gap:0;
+  background:rgba(0,0,0,.06);
+  border-top:1px solid rgba(0,0,0,.1);
+  border-bottom:1px solid rgba(0,0,0,.08);
+  min-height:340px;
+}
+
+/* Left: white info panel */
+.info-panel{
+  background:var(--inf-bg);
+  border-right:1px solid var(--inf-border);
+  padding:14px 14px 12px;
+  display:flex;flex-direction:column;gap:4px;
+  position:relative;overflow:hidden;
+}
+.info-panel::after{
+  content:'';position:absolute;top:0;right:0;bottom:0;
+  width:2px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.06),transparent);
+}
+.inf-name{font-family:var(--f-ui);font-size:15px;font-weight:700;color:#111;letter-spacing:.01em;line-height:1.2}
+.inf-quality{font-family:var(--f-mono);font-size:11.5px;color:#444;letter-spacing:.06em;margin-top:2px}
+.inf-kbps{font-family:var(--f-mono);font-size:10px;color:#666;letter-spacing:.04em}
+.inf-badge{
+  display:inline-block;margin-top:6px;padding:3px 8px;
+  background:#111;color:#f0f0ee;
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.18em;border-radius:2px;
+}
+.inf-badge.rec{background:#cc0000}
+.inf-badge.radio{background:#995500}
+.inf-time{
+  font-family:var(--f-mono);font-size:28px;font-weight:400;
+  color:#111;letter-spacing:.06em;margin-top:10px;line-height:1;
+}
+.inf-remain{font-family:var(--f-mono);font-size:10px;color:#888;letter-spacing:.1em;margin-top:2px}
+.inf-progress{height:3px;background:rgba(0,0,0,.12);border-radius:2px;overflow:hidden;margin-top:8px}
+.inf-prog-fill{height:100%;background:linear-gradient(90deg,#222,#555);border-radius:2px;transition:width .5s linear;width:0%}
+/* Spacer */
+.inf-spacer{flex:1}
+/* Mode info lines at bottom of info panel */
+.inf-source{font-family:var(--f-mono);font-size:8px;color:#aaa;letter-spacing:.06em;margin-top:4px;line-height:1.5}
+
+/* Centre: DAW / waveform display */
+.daw-display{
+  background:var(--d-bg);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+/* DAW scanlines */
+.daw-display::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:8;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);
+}
+/* DAW header bar */
+.daw-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 12px 5px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  flex-shrink:0;z-index:9;position:relative;
+}
+.daw-label{
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.2em;color:rgba(255,255,255,.4);
+}
+.daw-label.right{color:rgba(255,255,255,.3)}
+
+/* Track columns area */
+.daw-tracks{
+  flex:1;display:flex;align-items:flex-end;
+  padding:8px 8px 0;gap:6px;position:relative;z-index:2;
+}
+.track-col{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:flex-end;gap:4px;
+}
+.track-label{
+  font-family:var(--f-mono);font-size:8px;letter-spacing:.12em;
+  color:rgba(255,255,255,.3);margin-bottom:2px;
+}
+.track-bars-wrap{
+  width:100%;position:relative;
+  height:180px;display:flex;align-items:flex-end;
+  background:rgba(255,255,255,.025);border-radius:2px;overflow:hidden;
+}
+.track-bar-bg{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 14px,rgba(255,255,255,.04) 14px,rgba(255,255,255,.04) 15px);
+}
+.track-bar{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(0deg,#22b8ff 0%,#1ef5b0 70%,rgba(200,255,230,.6) 100%);
+  border-radius:1px 1px 0 0;
+  transition:height .06s linear;
+  box-shadow:0 0 12px rgba(30,245,176,.2),0 0 4px rgba(34,184,255,.4);
+  will-change:height;
+}
+/* Track row buttons */
+.track-btns{
+  display:flex;gap:2px;padding:4px 2px 5px;
+  z-index:3;
+}
+.trk-btn{
+  padding:2px 5px;border:1px solid rgba(255,255,255,.12);border-radius:2px;
+  background:rgba(255,255,255,.06);
+  font-family:var(--f-mono);font-size:7px;letter-spacing:.1em;
+  color:rgba(255,255,255,.4);cursor:pointer;transition:all .18s;outline:none;
+}
+.trk-btn:hover{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8)}
+.trk-btn.on{background:rgba(255,176,32,.2);border-color:rgba(255,176,32,.4);color:rgba(255,176,32,.9)}
+.trk-btn.on.mon{background:rgba(34,184,255,.15);border-color:rgba(34,184,255,.4);color:rgba(34,184,255,.9)}
+.trk-btn.on.ply{background:rgba(61,255,122,.15);border-color:rgba(61,255,122,.35);color:rgba(61,255,122,.9)}
+/* Waveform canvas (shown in non-DAW modes) */
+.wave-canvas-wrap{
+  position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .35s;
+}
+.wave-canvas-wrap.show{opacity:1}
+.wave-canvas-wrap canvas{width:100%;height:100%;display:block}
+/* Radio freq overlay */
+.radio-overlay{
+  position:absolute;inset:0;z-index:5;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.radio-overlay.show{opacity:1;pointer-events:auto;}
+.radio-freq-big{font-family:var(--f-mono);font-size:38px;color:var(--d-amber);letter-spacing:.06em;text-shadow:0 0 24px var(--d-amber),0 0 60px rgba(255,176,32,.2)}
+.radio-band-big{font-family:var(--f-mono);font-size:11px;letter-spacing:.5em;color:rgba(255,176,32,.6)}
+.radio-stn{font-family:var(--f-mono);font-size:13px;color:var(--d-cyan);letter-spacing:.14em}
+/* Station list inside radio overlay */
+.station-list-overlay{
+  display:flex;flex-direction:column;gap:5px;
+  max-height:130px;overflow-y:auto;
+  width:80%;margin-top:4px;
+}
+.stn-btn{
+  background:rgba(255,176,32,.05);
+  border:1px solid rgba(255,176,32,.15);
+  color:rgba(255,255,255,.6);
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.1em;
+  padding:5px 10px;border-radius:3px;cursor:pointer;text-align:left;
+  transition:all .15s;
+}
+.stn-btn:hover{background:rgba(255,176,32,.15);border-color:rgba(255,176,32,.4);color:rgba(255,176,32,.9)}
+.stn-btn.active{background:rgba(255,176,32,.2);border-color:rgba(255,176,32,.5);color:#ffb020}
+/* Rec overlay */
+.rec-dot-overlay{
+  position:absolute;bottom:8px;right:10px;z-index:6;
+  font-family:var(--f-mono);font-size:9px;color:var(--d-red);letter-spacing:.2em;
+  opacity:0;transition:opacity .3s;
+}
+.rec-dot-overlay.show{opacity:1;animation:recBlink .85s ease-in-out infinite}
+
+/* Right cluster */
+.right-cluster{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:space-between;
+  padding:12px 8px 14px;gap:10px;
+  border-left:1px solid rgba(0,0,0,.1);
+  background:linear-gradient(180deg,var(--h-top),var(--h-mid));
+}
+/* Main knob */
+.main-knob{
+  width:70px;height:70px;border-radius:50%;
+  cursor:ns-resize;user-select:none;position:relative;
+  background:
+    radial-gradient(ellipse 55% 38% at 32% 28%,rgba(255,255,255,.44) 0%,transparent 58%),
+    conic-gradient(from 0deg,#505254,#9a9c9e,#caccce,#9a9c9e,#626466,#505254,#9a9c9e,#caccce,#9a9c9e,#505254);
+  box-shadow:0 5px 14px rgba(0,0,0,.55),0 2px 4px rgba(0,0,0,.35),inset 0 1px 2px rgba(255,255,255,.22);
+  transition:transform .08s ease;
+  flex-shrink:0;
+}
+.main-knob:active{transform:scale(.97)}
+.knob-notch{
+  position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  width:4px;height:12px;background:rgba(0,0,0,.72);border-radius:2px;
+}
+.knob-label{
+  font-family:var(--f-mono);font-size:8px;letter-spacing:.12em;
+  color:rgba(0,0,0,.42);text-align:center;flex-shrink:0;
+}
+/* Rec buttons */
+.rec-group{display:flex;gap:7px;align-items:center;flex-shrink:0}
+.hw-btn{
+  width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 7px rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.3),inset 0 1px 1px rgba(255,255,255,.28);
+  transition:all .1s;outline:none;
+}
+.hw-btn:active{transform:translateY(1px);box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.hw-btn.rec-btn{
+  background:radial-gradient(circle at 38% 30%,#ff6666,#c00);
+}
+.hw-btn.rec-btn::after{
+  content:'';width:15px;height:15px;border-radius:50%;
+  background:#ff1a1a;box-shadow:0 0 8px rgba(255,0,0,.7);
+}
+.hw-btn.rec-btn.armed::after{animation:recBlink .6s ease-in-out infinite}
+.hw-btn.stop-btn{
+  background:radial-gradient(circle at 38% 30%,#e2e3e4,#a0a2a4);
+}
+.hw-btn.stop-btn::after{
+  content:'';width:13px;height:13px;border-radius:2px;background:#3a3c3e;
+}
+
+/* ═══ PORT STRIP ═══ */
+.port-strip{
+  display:flex;align-items:center;gap:16px;
+  padding:5px 20px 5px;
+  border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(0,0,0,.1);
+  background:linear-gradient(90deg,rgba(0,0,0,.04),transparent,rgba(0,0,0,.04));
+}
+.port{display:flex;flex-direction:column;align-items:center;gap:3px}
+.port-hole{background:#141618;box-shadow:inset 0 2px 5px rgba(0,0,0,.85),0 1px 0 rgba(255,255,255,.1)}
+.port-hole.usbc{width:16px;height:9px;border-radius:4px}
+.port-hole.sd{width:15px;height:8px;border-radius:1px}
+.port-hole.jack{width:11px;height:11px;border-radius:50%}
+.port-hole.xlr{width:13px;height:13px;border-radius:50%}
+.port-lbl{font-family:var(--f-mono);font-size:6.5px;color:rgba(0,0,0,.35);letter-spacing:.1em}
+.port-strip-right{margin-left:auto;font-family:var(--f-mono);font-size:8px;color:rgba(0,0,0,.3);letter-spacing:.08em}
+
+/* ═══ PROGRESS ROW ═══ */
+.progress-row{
+  display:flex;align-items:center;gap:8px;
+  padding:5px 16px 4px;
+  background:rgba(0,0,0,.06);
+}
+.prog-time{font-family:var(--f-mono);font-size:10px;color:rgba(0,0,0,.5);letter-spacing:.08em;flex-shrink:0;min-width:36px}
+.prog-track{
+  flex:1;height:5px;background:rgba(0,0,0,.14);border-radius:3px;
+  overflow:visible;cursor:pointer;position:relative;
+}
+.prog-fill{height:100%;background:linear-gradient(90deg,#444,#666);border-radius:3px;transition:width .5s linear;width:0%;pointer-events:none}
+/* Scrubber dot */
+.prog-track::after{
+  content:'';position:absolute;top:50%;transform:translate(-50%,-50%);
+  width:10px;height:10px;border-radius:50%;background:#888;
+  box-shadow:0 1px 3px rgba(0,0,0,.4);
+  left:var(--prog-pct,0%);transition:left .5s linear;
+}
+.prog-total{font-family:var(--f-mono);font-size:10px;color:rgba(0,0,0,.4);letter-spacing:.08em;flex-shrink:0;min-width:36px;text-align:right}
+/* Mode tabs */
+.mode-tabs{display:flex;gap:3px;margin-left:8px}
+.mode-tab{
+  padding:3px 11px;border:1px solid rgba(0,0,0,.18);border-radius:3px;
+  background:transparent;cursor:pointer;outline:none;
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;
+  color:rgba(0,0,0,.5);transition:all .15s;
+}
+.mode-tab.active{background:rgba(0,0,0,.6);color:#e8e8e4;border-color:transparent}
+.mode-tab:hover:not(.active){background:rgba(0,0,0,.1)}
+
+/* ═══ TRANSPORT ROW ═══ */
+.transport-row{
+  display:flex;align-items:center;gap:5px;
+  padding:8px 16px 8px;
+  background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.02));
+  border-bottom:1px solid rgba(0,0,0,.09);
+}
+.t-btn{
+  height:34px;border:none;border-radius:4px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  font-family:var(--f-mono);font-size:9px;color:rgba(40,42,46,.8);
+  letter-spacing:.07em;outline:none;flex-shrink:0;padding:0 10px;
+  background:linear-gradient(162deg,var(--btn-hi) 0%,var(--btn-mid) 50%,var(--btn-lo) 100%);
+  box-shadow:0 2px 0 rgba(0,0,0,.35),0 3px 6px rgba(0,0,0,.22),inset 0 1px 1px rgba(255,255,255,.5),inset 0 -1px 0 rgba(0,0,0,.08);
+  transition:all .08s ease;user-select:none;
+  min-width:40px;
+}
+.t-btn svg{width:14px;height:14px;flex-shrink:0;pointer-events:none}
+.t-btn svg polygon,.t-btn svg rect{fill:rgba(35,38,44,.82)}
+.t-btn svg line{stroke:rgba(35,38,44,.82);stroke-width:2;fill:none;stroke-linecap:round}
+.t-btn svg path{stroke:rgba(35,38,44,.78);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.t-btn:hover{background:linear-gradient(162deg,#dcdee0 0%,#cacccf 50%,#9a9c9f 100%)}
+.t-btn:active,.t-btn.pressed{transform:translateY(2px);box-shadow:0 0 0 rgba(0,0,0,.35),inset 0 1px 2px rgba(0,0,0,.18)}
+.t-btn.play-btn{position:relative;min-width:46px}
+.play-led{
+  position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
+  width:5px;height:5px;border-radius:50%;background:#2a2a2a;transition:all .3s;
+}
+.t-btn.playing .play-led{background:#22cc44;box-shadow:0 0 6px #22cc44}
+.t-sep{width:8px;flex-shrink:0}
+.t-right{margin-left:auto;display:flex;gap:5px}
+.t-btn.scan-btn{min-width:80px}
+.t-btn.mode-lit{
+  background:linear-gradient(162deg,#7a7c7e 0%,#646668 50%,#4c4e50 100%);
+  color:rgba(218,222,218,.9);
+  box-shadow:0 1px 0 rgba(0,0,0,.4),inset 0 2px 3px rgba(0,0,0,.25);
+}
+
+/* ═══════════════════════════════════════════════
+   EQ SECTION
+═══════════════════════════════════════════════ */
+.eq-section{
+  background:var(--eq-bg);
+  border-top:2px solid rgba(0,0,0,.6);
+  padding:12px 14px 10px;
+}
+.eq-banks{display:flex;gap:10px}
+.eq-bank{
+  flex:1;padding:8px 8px 6px;
+  border:1px solid rgba(255,255,255,.06);border-radius:3px;
+  background:rgba(255,255,255,.015);position:relative;overflow:hidden;
+}
+/* Grid lines in bank */
+.eq-bank::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 19px,var(--eq-grid) 19px,var(--eq-grid) 20px),
+    repeating-linear-gradient(90deg,transparent,transparent 24px,var(--eq-grid) 24px,var(--eq-grid) 25px);
+}
+.eq-bank-name{
+  font-family:var(--f-mono);font-size:8px;letter-spacing:.2em;
+  color:rgba(255,255,255,.3);margin-bottom:5px;
+}
+.eq-db-row{
+  display:flex;align-items:flex-start;gap:4px;
+}
+.eq-db-col{
+  display:flex;flex-direction:column;justify-content:space-between;
+  height:100px;flex-shrink:0;
+}
+.eq-db-col span{
+  font-family:var(--f-mono);font-size:7px;color:rgba(255,255,255,.28);
+  display:block;line-height:1;
+}
+.eq-faders-row{display:flex;flex:1;gap:2px}
+.eq-fader-col{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.fader-wrap{
+  position:relative;width:100%;height:100px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:ns-resize;
+}
+/* Track line */
+.fader-track{
+  width:2px;height:86px;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.14),rgba(255,255,255,.07));
+  border-radius:1px;position:relative;
+}
+/* Zero line */
+.fader-track::after{
+  content:'';position:absolute;top:50%;transform:translateY(-50%);
+  left:-5px;right:-5px;height:1px;background:rgba(255,255,255,.14);
+}
+/* Fader knob */
+.fader-knob{
+  position:absolute;left:50%;transform:translate(-50%,-50%);
+  width:18px;height:10px;border-radius:2px;
+  background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(200,202,204,.88));
+  box-shadow:0 2px 5px rgba(0,0,0,.65),0 1px 1px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.92);
+  cursor:ns-resize;z-index:5;top:50%;
+}
+.fader-knob::after{
+  content:'';position:absolute;
+  inset:4px 3px;border-top:1px solid rgba(0,0,0,.18);border-bottom:1px solid rgba(0,0,0,.18);
+}
+.fader-freq{
+  font-family:var(--f-mono);font-size:7px;color:rgba(255,255,255,.3);
+  letter-spacing:.04em;text-align:center;
+}
+/* EQ footer */
+.eq-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:10px;padding-top:8px;
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.eq-footer-label{
+  font-family:var(--f-ui);font-size:12px;font-weight:400;
+  color:rgba(255,255,255,.32);letter-spacing:.08em;
+}
+.eq-presets{display:flex;gap:5px;flex-wrap:wrap}
+.eq-p-btn{
+  padding:4px 11px;border:1px solid rgba(255,255,255,.12);border-radius:3px;
+  background:transparent;color:rgba(255,255,255,.35);
+  font-family:var(--f-mono);font-size:8.5px;letter-spacing:.12em;
+  cursor:pointer;transition:all .15s;outline:none;
+}
+.eq-p-btn:hover{border-color:rgba(255,255,255,.32);color:rgba(255,255,255,.72);background:rgba(255,255,255,.06)}
+.eq-p-btn.active{
+  border-color:rgba(255,255,255,.38);color:rgba(255,255,255,.85);
+  background:rgba(255,255,255,.09);
+  box-shadow:0 0 0 1px rgba(255,255,255,.08);
+}
+
+/* ═══ FEET ═══ */
+.feet-row{
+  display:flex;justify-content:space-between;padding:0 50px;
+  background:var(--eq-bg);
+}
+.foot{
+  width:32px;height:16px;
+  background:linear-gradient(180deg,#333,#1a1a1a);
+  border-radius:0 0 10px 10px;
+  box-shadow:0 4px 10px rgba(0,0,0,.6);
+}
+
+/* ═══ DEVICE INFO ═══ */
+.device-info{
+  margin-top:30px;text-align:center;z-index:10;
+  animation:fadeUp .9s .4s both;
+}
+.d-brand{font-family:var(--f-serif);font-size:13px;font-weight:300;letter-spacing:.6em;color:rgba(255,255,255,.3);margin-bottom:5px}
+.d-tag{font-family:var(--f-ui);font-size:12px;font-weight:300;color:rgba(255,255,255,.18);letter-spacing:.12em;margin-bottom:7px}
+.d-specs{display:flex;flex-wrap:wrap;justify-content:center;font-family:var(--f-mono);font-size:9px;color:rgba(255,255,255,.14);letter-spacing:.06em;gap:0 4px}
+.d-specs .dot{color:rgba(255,255,255,.1)}
+
+/* kbd hint */
+.kbd-hint{
+  position:fixed;bottom:14px;right:16px;
+  font-family:var(--f-mono);font-size:9px;line-height:1.9;
+  color:rgba(255,255,255,.14);letter-spacing:.06em;text-align:right;
+  pointer-events:none;animation:fadeUp .8s 2s both;
+}
+@media(max-width:640px){.kbd-hint{display:none}}
+
+/* ═══ KEYFRAMES ═══ */
+@keyframes unitIn{from{opacity:0;transform:translateY(22px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes recBlink{0%,100%{opacity:1}50%{opacity:.18}}
+@keyframes ledBreathe{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes marquee{0%,15%{transform:translateX(0)}80%,100%{transform:translateX(var(--mq-dist,0px))}}
+.scrolling{animation:marquee 7s ease-in-out infinite}
+
+/* Responsive */
+@media(max-width:860px){
+  .display-area{grid-template-columns:175px 1fr 82px}
+  .info-panel{padding:10px}
+  .inf-time{font-size:22px}
+}
+@media(max-width:640px){
+  .display-area{grid-template-columns:140px 1fr 76px}
+  .brand{font-size:18px;letter-spacing:.3em}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ DEVICE ══════════════ -->
+<div class="device">
+  <div class="antenna"><div class="antenna-base"></div></div>
+  <div class="housing">
+
+    <!-- ── TOP RAIL ── -->
+    <div class="top-rail">
+      <div class="top-rail-left">
+        <div class="screw"></div>
+        <div class="leds">
+          <div class="led" id="ledA"></div>
+          <div class="led" id="ledB"></div>
+          <div class="led" id="ledC"></div>
+        </div>
+      </div>
+      <div class="brand">IUS DRRP</div>
+      <div class="top-rail-right">
+        <span class="status-text" id="topStatusTxt">STANDBY</span>
+        <div class="screw"></div>
+        <div class="status-led" id="statusLed"></div>
+      </div>
+    </div>
+
+    <!-- ── MAIN DISPLAY ── -->
+    <div class="display-area">
+
+      <!-- Left: info panel -->
+      <div class="info-panel">
+        <div class="inf-name" id="infName">IUS — Ready</div>
+        <div class="inf-quality" id="infQuality">Web Audio · Active</div>
+        <div class="inf-kbps" id="infKbps">—</div>
+        <div><span class="inf-badge" id="infBadge">PLAYER</span></div>
+        <div class="inf-time" id="infTime">00:00</div>
+        <div class="inf-remain" id="infRemain">--:--</div>
+        <div class="inf-progress"><div class="inf-prog-fill" id="infProgFill"></div></div>
+        <div class="inf-spacer"></div>
+        <div class="inf-source" id="infSource">MP3 · Local library<br>Web Audio chain active</div>
+      </div>
+
+      <!-- Centre: DAW monitor display -->
+      <div class="daw-display" id="dawDisplay">
+        <div class="daw-header">
+          <span class="daw-label" id="dawLabelLeft">TRACKS 1–5</span>
+          <span class="daw-label right" id="dawLabelRight">DAW MONITOR OVERLAY</span>
+        </div>
+
+        <!-- 5 track columns — built by JS -->
+        <div class="daw-tracks" id="dawTracks"></div>
+
+        <!-- Waveform canvas (player/record mode) -->
+        <div class="wave-canvas-wrap" id="waveWrap">
+          <canvas id="waveCanvas"></canvas>
+        </div>
+
+        <!-- Radio overlay -->
+        <div class="radio-overlay" id="radioOverlay">
+          <div class="radio-band-big" id="radioBandBig">FM</div>
+          <div class="radio-freq-big" id="radioFreqBig">——</div>
+          <div class="radio-stn" id="radioStnBig">Select a station</div>
+          <!-- Station list injected here by JS -->
+        </div>
+
+        <!-- Rec overlay -->
+        <div class="rec-dot-overlay" id="recDotOverlay">● REC</div>
+      </div>
+
+      <!-- Right cluster -->
+      <div class="right-cluster">
+        <div class="main-knob" id="mainKnob"><div class="knob-notch"></div></div>
+        <div class="knob-label">VOLUME</div>
+        <div class="rec-group">
+          <div class="hw-btn rec-btn" id="hwRecBtn" title="Arm Record"></div>
+          <div class="hw-btn stop-btn" id="hwStopBtn" title="Stop"></div>
+        </div>
+      </div>
+
+    </div><!-- /display-area -->
+
+    <!-- ── PORT STRIP ── -->
+    <div class="port-strip">
+      <div class="port"><div class="port-hole usbc"></div><span class="port-lbl">USB-C</span></div>
+      <div class="port"><div class="port-hole sd"></div><span class="port-lbl">SD</span></div>
+      <div class="port"><div class="port-hole jack"></div><span class="port-lbl">PHONES</span></div>
+      <div class="port"><div class="port-hole jack"></div><span class="port-lbl">LINE OUT</span></div>
+      <div class="port"><div class="port-hole jack"></div><span class="port-lbl">LINE IN</span></div>
+      <div class="port"><div class="port-hole xlr"></div><span class="port-lbl">XLR</span></div>
+      <div class="port-strip-right">MAINS · BACKUP BATT 1HR</div>
+    </div>
+
+    <!-- ── PROGRESS ROW ── -->
+    <div class="progress-row">
+      <span class="prog-time" id="progLeft">00:00</span>
+      <div class="prog-track" id="progTrack">
+        <div class="prog-fill" id="progFill"></div>
+      </div>
+      <span class="prog-total" id="progRight">--:--</span>
+      <div class="mode-tabs">
+        <button class="mode-tab active" id="tabPlayer">PLAYER</button>
+        <button class="mode-tab" id="tabRadio">RADIO</button>
+        <button class="mode-tab" id="tabRecord">RECORD</button>
+      </div>
+    </div>
+
+    <!-- ── TRANSPORT ROW ── -->
+    <div class="transport-row">
+      <button class="t-btn" id="btnPrev" title="Previous">
+        <svg viewBox="0 0 24 24"><polygon points="19,20 9,12 19,4"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+      </button>
+      <button class="t-btn play-btn" id="btnPlay" title="Play / Pause">
+        <svg viewBox="0 0 24 24" id="playIcon"><polygon points="5,3 19,12 5,21"/></svg>
+        <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        <div class="play-led"></div>
+      </button>
+      <button class="t-btn" id="btnStop" title="Stop">
+        <svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12"/></svg>
+      </button>
+      <button class="t-btn" id="btnNext" title="Next">
+        <svg viewBox="0 0 24 24"><polygon points="5,4 15,12 5,20"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+      </button>
+      <div class="t-sep"></div>
+      <button class="t-btn" id="btnRadioMode">RADIO</button>
+      <button class="t-btn" id="btnShuffle" title="Shuffle">
+        <svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+      </button>
+      <button class="t-btn" id="btnRepeat" title="Repeat">
+        <svg viewBox="0 0 24 24"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3"/></svg>
+      </button>
+      <div class="t-right">
+        <button class="t-btn scan-btn" id="btnScanPrev">◀ SCAN</button>
+        <button class="t-btn scan-btn" id="btnScanNext">SCAN ▶</button>
+      </div>
+    </div>
+
+    <!-- ══════════ MANUAL EQ ══════════ -->
+    <div class="eq-section">
+      <div class="eq-banks" id="eqBanks">
+        <!-- Built by JS: 3 banks × 5 faders -->
+      </div>
+      <div class="eq-footer">
+        <span class="eq-footer-label">Manual EQ · 15-Band</span>
+        <div class="eq-presets">
+          <button class="eq-p-btn active" data-p="flat">FLAT</button>
+          <button class="eq-p-btn" data-p="bass">BASS +</button>
+          <button class="eq-p-btn" data-p="vocal">VOCAL</button>
+          <button class="eq-p-btn" data-p="air">AIR</button>
+          <button class="eq-p-btn" data-p="warm">WARM</button>
+          <button class="eq-p-btn" data-p="studio">STUDIO</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="feet-row">
+      <div class="foot"></div>
+      <div class="foot"></div>
+      <div class="foot"></div>
+      <div class="foot"></div>
+    </div>
+
+  </div><!-- /housing -->
+</div><!-- /device -->
+
+<div class="device-info">
+  <div class="d-brand">I U S &nbsp; D R R P</div>
+  <div class="d-tag">Desktop Hi-Fi Recorder · Playback · Radio</div>
+  <div class="d-specs">
+    <span>HiFiBerry DAC+ ADC Pro</span><span class="dot"> · </span>
+    <span>Built-in Speaker</span><span class="dot"> · </span>
+    <span>1hr Battery Backup</span><span class="dot"> · </span>
+    <span>FLAC 24-bit/96kHz</span><span class="dot"> · </span>
+    <span>FM/DAB+ Radio</span><span class="dot"> · </span>
+    <span>15-Band Manual EQ</span><span class="dot"> · </span>
+    <span>Raspberry Pi 4</span>
+  </div>
+</div>
+
+<div class="kbd-hint">
+  SPACE play/pause &nbsp;&nbsp; P player &nbsp; R radio &nbsp; D record<br>
+  ← → prev/next or scan &nbsp;&nbsp; T toggle tracks &nbsp;&nbsp; scroll = volume
+</div>
+
+<!-- Hidden audio elements — real Web Audio playback -->
+<audio id="playerAudio" preload="metadata" crossorigin="anonymous"></audio>
+<audio id="radioAudio"  preload="none"     crossorigin="anonymous"></audio>
+
+<!-- ══════════════════════════════════════════════
+     UNIFIED SCRIPT — Official UI + Real Web Audio
+══════════════════════════════════════════════ -->
+<script>
+(function () {
+'use strict';
+
+/* ─── Helpers ─── */
+const $ = id => document.getElementById(id);
+function fmt(s) {
+  if (!Number.isFinite(s) || s < 0) return '--:--';
+  return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+}
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+/* ─── Audio elements ─── */
+const playerAudio = $('playerAudio');
+const radioAudio  = $('radioAudio');
+
+/* ─── Web Audio API (lazy-initialised on first user gesture) ─── */
+let audioCtx        = null;
+let masterGain      = null;
+let analyserNode    = null;
+let eqFilters       = null;
+let playerSrc       = null;
+let radioSrc        = null;
+let micSrc          = null;
+let currentMediaSrc = null;
+
+const EQ_FREQUENCIES = [25, 40, 63, 100, 160, 250, 400, 630, 1000, 1600, 2500, 4000, 6300, 10000, 16000];
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  analyserNode = audioCtx.createAnalyser();
+  analyserNode.fftSize = 2048;
+  eqFilters = EQ_FREQUENCIES.map(freq => {
+    const f = audioCtx.createBiquadFilter();
+    f.type = 'peaking'; f.frequency.value = freq;
+    f.Q.value = 1.1; f.gain.value = 0;
+    return f;
+  });
+  // Apply current EQ values
+  S.eqValues.forEach((v, i) => { if (eqFilters[i]) eqFilters[i].gain.value = v; });
+  masterGain.gain.value = S.volume / 100;
+}
+
+function chainConnect(srcNode) {
+  if (!audioCtx) return;
+  if (currentMediaSrc) { try { currentMediaSrc.disconnect(); } catch (e) {} }
+  eqFilters.forEach(f => { try { f.disconnect(); } catch (e) {} });
+  currentMediaSrc = srcNode;
+  let node = srcNode;
+  eqFilters.forEach(f => { node.connect(f); node = f; });
+  node.connect(analyserNode);
+  analyserNode.connect(masterGain);
+  masterGain.connect(audioCtx.destination);
+}
+
+function ensurePlayerSrc() {
+  if (!playerSrc && audioCtx) playerSrc = audioCtx.createMediaElementSource(playerAudio);
+  return playerSrc;
+}
+
+function ensureRadioSrc() {
+  if (!radioSrc && audioCtx) radioSrc = audioCtx.createMediaElementSource(radioAudio);
+  return radioSrc;
+}
+
+async function safeResume() {
+  if (audioCtx && audioCtx.state !== 'running') await audioCtx.resume();
+}
+
+/* ─── State ─── */
+const S = {
+  mode: 'player',
+  playing: false,
+  recording: false,
+  volume: 72,
+  trackIdx: 0,
+  stationIdx: 0,
+  showTracks: true,
+  eqValues: Array(15).fill(0),
+  eqPreset: 'flat',
+  knobAngle: -10,   // maps to 72% volume
+  scanAnim: null,
+  sourceType: null,
+  mediaRecorder: null,
+  recordChunks: [],
+  micStream: null,
+  radioClock: null,
+  wPhase: 0,
+  wPhaseRec: 0,
+  stations: [],
+};
+
+/* ─── Track data ─── */
+const TRACKS = [
+  { title: 'sample01.mp3', artist: 'Local track', src: 'assets/audio/sample01.mp3', fmt: 'MP3', spec: '44.1kHz', kbps: '320kbps' },
+  { title: 'sample02.mp3', artist: 'Local track', src: 'assets/audio/sample02.mp3', fmt: 'MP3', spec: '44.1kHz', kbps: '320kbps' },
+  { title: 'sample03.mp3', artist: 'Local track', src: 'assets/audio/sample03.mp3', fmt: 'MP3', spec: '44.1kHz', kbps: '320kbps' },
+];
+
+/* ─── EQ presets (15 bands matching 3 banks × 5 faders) ─── */
+const EQ_PRE = {
+  flat:   Array(15).fill(0),
+  bass:   [ 7, 5, 3, 1,-1,  5, 3, 1, 0,-1,  3, 1, 0, 0,-1],
+  vocal:  [-2, 0, 4, 5, 2, -2, 1, 5, 6, 3, -2, 0, 4, 5, 2],
+  air:    [ 0, 0, 1, 3, 7,  0, 0, 1, 3, 8,  0, 1, 2, 5, 9],
+  warm:   [ 4, 3, 2, 0,-2,  4, 3, 2, 0,-2,  3, 2, 1, 0,-2],
+  studio: [ 2, 1, 0, 2, 3,  0, 0, 0, 0, 0, -1, 0, 1, 3, 5],
+};
+const EQ_FREQS = ['400','1k','2.5k','6.3k','16k'];
+const EQ_BANKS = ['LOW','MID','HIGH'];
+
+/* ═════════════════════════════════════════════
+   BUILD: 5 DAW track columns
+═════════════════════════════════════════════ */
+const dawTracks = $('dawTracks');
+const trackBarEls = [];
+const trackBtnStates = Array.from({ length: 5 }, () => ({ rec: false, ply: true, mon: true }));
+
+(function buildTracks() {
+  for (let i = 0; i < 5; i++) {
+    const col = document.createElement('div');
+    col.className = 'track-col';
+    col.innerHTML = `
+      <div class="track-label">TRK ${i + 1}</div>
+      <div class="track-bars-wrap">
+        <div class="track-bar-bg"></div>
+        <div class="track-bar" id="tbar${i}" style="height:0%"></div>
+      </div>
+      <div class="track-btns">
+        <button class="trk-btn" data-ti="${i}" data-act="rec">REC</button>
+        <button class="trk-btn on ply" data-ti="${i}" data-act="ply">PLY</button>
+        <button class="trk-btn on mon" data-ti="${i}" data-act="mon">MON</button>
+      </div>`;
+    dawTracks.appendChild(col);
+    trackBarEls.push($(`tbar${i}`));
+  }
+  document.querySelectorAll('.trk-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ti = +btn.dataset.ti, act = btn.dataset.act;
+      trackBtnStates[ti][act] = !trackBtnStates[ti][act];
+      btn.classList.toggle('on',  trackBtnStates[ti][act]);
+      if (act === 'ply') btn.classList.toggle('ply', trackBtnStates[ti][act]);
+      if (act === 'mon') btn.classList.toggle('mon', trackBtnStates[ti][act]);
+    });
+  });
+})();
+
+/* ═════════════════════════════════════════════
+   BUILD: 15-band EQ (3 banks × 5 faders)
+═════════════════════════════════════════════ */
+const eqBanksEl = $('eqBanks');
+const faderKnobs = [];
+
+(function buildEQ() {
+  EQ_BANKS.forEach((bankName, b) => {
+    const bank = document.createElement('div');
+    bank.className = 'eq-bank';
+    const dbCol = `<div class="eq-db-col"><span>+10</span><span>&nbsp;0</span><span>-10</span></div>`;
+    let fadersHTML = '';
+    for (let f = 0; f < 5; f++) {
+      const idx = b * 5 + f;
+      fadersHTML += `
+        <div class="eq-fader-col">
+          <div class="fader-wrap" data-idx="${idx}">
+            <div class="fader-track" id="ft${idx}">
+              <div class="fader-knob" id="fk${idx}"></div>
+            </div>
+          </div>
+          <div class="fader-freq">${EQ_FREQS[f]}</div>
+        </div>`;
+    }
+    bank.innerHTML = `<div class="eq-bank-name">${bankName}</div>
+      <div class="eq-db-row">${dbCol}<div class="eq-faders-row">${fadersHTML}</div></div>`;
+    eqBanksEl.appendChild(bank);
+    for (let f = 0; f < 5; f++) faderKnobs.push($(`fk${b * 5 + f}`));
+  });
+  initFaderDrag();
+  setTimeout(refreshFaders, 80);
+})();
+
+function setFader(idx, dB) {
+  S.eqValues[idx] = clamp(dB, -10, 10);
+  if (eqFilters && eqFilters[idx]) eqFilters[idx].gain.value = S.eqValues[idx];
+  const pct  = (10 - S.eqValues[idx]) / 20;   // 0 = top, 1 = bottom
+  const track = $(`ft${idx}`);
+  if (!track) return;
+  const h = track.offsetHeight || 86;
+  const knob = faderKnobs[idx];
+  if (knob) knob.style.top = pct * h + 'px';
+}
+function refreshFaders() { for (let i = 0; i < 15; i++) setFader(i, S.eqValues[i]); }
+new ResizeObserver(refreshFaders).observe(eqBanksEl);
+
+function applyPreset(name) {
+  S.eqPreset = name;
+  (EQ_PRE[name] || EQ_PRE.flat).forEach((v, i) => setFader(i, v));
+  document.querySelectorAll('.eq-p-btn').forEach(b => b.classList.toggle('active', b.dataset.p === name));
+}
+document.querySelectorAll('.eq-p-btn').forEach(b => b.addEventListener('click', () => applyPreset(b.dataset.p)));
+
+function initFaderDrag() {
+  document.querySelectorAll('.fader-wrap').forEach(wrap => {
+    const idx = +wrap.dataset.idx;
+    let dragging = false, startY = 0, startDB = 0;
+    const dn = y  => { dragging = true;  startY = y; startDB = S.eqValues[idx]; };
+    const mv = y  => { if (dragging) setFader(idx, clamp(startDB + (startY - y) / 4, -10, 10)); };
+    const up = () => { dragging = false; };
+    wrap.addEventListener('mousedown',  e => { dn(e.clientY); e.preventDefault(); });
+    document.addEventListener('mousemove', e => mv(e.clientY));
+    document.addEventListener('mouseup',   up);
+    wrap.addEventListener('touchstart',  e => { dn(e.touches[0].clientY); e.preventDefault(); }, { passive: false });
+    document.addEventListener('touchmove', e => { if (dragging) { mv(e.touches[0].clientY); e.preventDefault(); } }, { passive: false });
+    document.addEventListener('touchend',  up);
+    wrap.addEventListener('click', e => {
+      const rect = wrap.querySelector('.fader-track').getBoundingClientRect();
+      setFader(idx, clamp(10 - (e.clientY - rect.top) / rect.height * 20, -10, 10));
+    });
+  });
+}
+
+/* ═════════════════════════════════════════════
+   WAVEFORM / SPECTRUM CANVAS
+═════════════════════════════════════════════ */
+const waveCanvas = $('waveCanvas');
+const wCtx = waveCanvas.getContext('2d');
+let _wW = 600, _wH = 280;
+
+function resizeWave() {
+  const dpr  = window.devicePixelRatio || 1;
+  const disp = $('dawDisplay');
+  const w = disp.clientWidth, h = disp.clientHeight;
+  waveCanvas.width  = w * dpr;
+  waveCanvas.height = h * dpr;
+  wCtx.scale(dpr, dpr);
+  _wW = w; _wH = h;
+}
+new ResizeObserver(resizeWave).observe($('dawDisplay'));
+setTimeout(resizeWave, 50);
+
+/* Track bar animation */
+const tBarCur    = Array(5).fill(0);
+const tBarTgt    = Array(5).fill(0);
+const tBarPhases = Array.from({ length: 5 }, (_, i) => i * 0.7);
+let tBarTgtTimer = 0;
+
+function updateTrackBars(dt) {
+  tBarTgtTimer += dt;
+  if (tBarTgtTimer > 85) {
+    tBarTgtTimer = 0;
+    if (S.playing || S.recording) {
+      if (analyserNode) {
+        const data = new Uint8Array(analyserNode.frequencyBinCount);
+        analyserNode.getByteFrequencyData(data);
+        const band = Math.floor(data.length / 5);
+        for (let i = 0; i < 5; i++) {
+          let sum = 0;
+          for (let j = i * band; j < (i + 1) * band; j++) sum += data[j];
+          tBarTgt[i] = clamp(sum / band / 255, 0.02, 0.98);
+        }
+      } else {
+        for (let i = 0; i < 5; i++) {
+          tBarTgt[i] = clamp(0.4 + 0.35 * Math.abs(Math.sin(tBarPhases[i] + S.wPhase * 0.6 * (i % 3 + 0.8))) + (Math.random() - 0.5) * 0.3, 0.02, 0.98);
+          tBarPhases[i] += 0.18 * (i % 2 === 0 ? 1 : -1);
+        }
+      }
+    } else {
+      tBarTgt.fill(0);
+    }
+  }
+  for (let i = 0; i < 5; i++) {
+    tBarCur[i] += (tBarTgt[i] - tBarCur[i]) * 0.15;
+    if (trackBarEls[i]) trackBarEls[i].style.height = Math.round(tBarCur[i] * 100) + '%';
+  }
+}
+
+function drawWave() {
+  const W = _wW, H = _wH;
+  wCtx.clearRect(0, 0, W, H);
+
+  /* RADIO MODE — spectrum bars */
+  if (S.mode === 'radio') {
+    const hasData = analyserNode && !radioAudio.paused;
+    const data = hasData ? (() => { const d = new Uint8Array(analyserNode.frequencyBinCount); analyserNode.getByteFrequencyData(d); return d; })() : null;
+    const n = 56, bw = (W - 16) / n;
+    for (let i = 0; i < n; i++) {
+      const mag = data
+        ? data[Math.floor(i * data.length / n)] / 255
+        : 0.08 + 0.42 * Math.abs(Math.sin(i * 0.28 + S.wPhase * 0.55)) * Math.abs(Math.cos(i * 0.14 + S.wPhase * 0.3));
+      const bh = Math.max(2, mag * H * 0.82);
+      const x  = 8 + i * bw;
+      const g  = wCtx.createLinearGradient(0, H - bh, 0, H);
+      g.addColorStop(0,   'rgba(255,176,32,.88)');
+      g.addColorStop(0.7, 'rgba(255,176,32,.35)');
+      g.addColorStop(1,   'rgba(255,176,32,.08)');
+      wCtx.fillStyle = g;
+      wCtx.fillRect(x, H - bh, bw - 1, bh);
+    }
+    if (!hasData) S.wPhase += 0.02;
+    return;
+  }
+
+  /* RECORD MODE — oscilloscope */
+  if (S.mode === 'record') {
+    wCtx.strokeStyle = 'rgba(255,42,60,.9)';
+    wCtx.lineWidth   = 1.5;
+    wCtx.shadowColor = 'rgba(255,42,60,.45)';
+    wCtx.shadowBlur  = 7;
+    wCtx.beginPath();
+    if (analyserNode && S.recording) {
+      const data = new Uint8Array(analyserNode.fftSize);
+      analyserNode.getByteTimeDomainData(data);
+      for (let x = 0; x < W; x++) {
+        const v = (data[Math.floor(x / W * data.length)] - 128) / 128;
+        x === 0 ? wCtx.moveTo(x, H / 2 + v * H * 0.44) : wCtx.lineTo(x, H / 2 + v * H * 0.44);
+      }
+    } else {
+      for (let x = 0; x < W; x++) {
+        const t = x / W;
+        const v = 0.38 * Math.sin(t * Math.PI * 12 + S.wPhaseRec)
+                + 0.22 * Math.sin(t * Math.PI * 29 + S.wPhaseRec * 1.3)
+                + 0.10 * Math.sin(t * Math.PI * 58 + S.wPhaseRec * 0.75)
+                + 0.05 * (Math.random() - 0.5);
+        x === 0 ? wCtx.moveTo(x, H / 2 + v * H * 0.44) : wCtx.lineTo(x, H / 2 + v * H * 0.44);
+      }
+      S.wPhaseRec += 0.07;
+    }
+    wCtx.stroke();
+    wCtx.shadowBlur = 0;
+    wCtx.strokeStyle = 'rgba(255,42,60,.1)'; wCtx.lineWidth = 1;
+    wCtx.beginPath(); wCtx.moveTo(0, H / 2); wCtx.lineTo(W, H / 2); wCtx.stroke();
+    return;
+  }
+
+  /* PLAYER MODE — oscilloscope */
+  const intensity = S.playing ? 1 : 0.16;
+  wCtx.strokeStyle = 'rgba(255,255,255,.038)'; wCtx.lineWidth = 1;
+  for (let i = 1; i < 4; i++) {
+    wCtx.beginPath(); wCtx.moveTo(0, H * i / 4); wCtx.lineTo(W, H * i / 4); wCtx.stroke();
+  }
+  wCtx.strokeStyle = `rgba(232,238,234,${intensity * 0.7})`;
+  wCtx.lineWidth   = 1.4;
+  wCtx.shadowColor = `rgba(200,220,210,${intensity * 0.35})`;
+  wCtx.shadowBlur  = 7;
+  wCtx.beginPath();
+  if (analyserNode && S.playing) {
+    const data = new Uint8Array(analyserNode.fftSize);
+    analyserNode.getByteTimeDomainData(data);
+    for (let x = 0; x < W; x++) {
+      const v = (data[Math.floor(x / W * data.length)] - 128) / 128;
+      x === 0 ? wCtx.moveTo(x, H / 2 + v * H * 0.44) : wCtx.lineTo(x, H / 2 + v * H * 0.44);
+    }
+  } else {
+    for (let x = 0; x < W; x++) {
+      const t = x / W;
+      const v = 0.3  * Math.sin(t * Math.PI * 8  + S.wPhase)
+              + 0.16 * Math.sin(t * Math.PI * 19 + S.wPhase * 1.4)
+              + 0.09 * Math.sin(t * Math.PI * 37 + S.wPhase * 0.82)
+              + 0.05 * Math.sin(t * Math.PI * 72 + S.wPhase * 2.1);
+      x === 0 ? wCtx.moveTo(x, H / 2 + v * H * 0.44) : wCtx.lineTo(x, H / 2 + v * H * 0.44);
+    }
+    if (S.playing) S.wPhase += 0.038;
+  }
+  wCtx.stroke(); wCtx.shadowBlur = 0;
+}
+
+let lastTs = 0;
+(function loop(ts) {
+  requestAnimationFrame(loop);
+  const dt = ts - lastTs; lastTs = ts;
+  if (!S.showTracks || S.mode === 'radio' || S.mode === 'record') drawWave();
+  updateTrackBars(dt);
+})();
+
+/* ─── Track overlay toggle ─── */
+function setTrackOverlay(show) {
+  S.showTracks = show;
+  dawTracks.style.opacity       = show ? '1' : '0';
+  dawTracks.style.pointerEvents = show ? '' : 'none';
+  $('waveWrap').classList.toggle('show', !show && S.mode !== 'radio');
+}
+
+/* ═════════════════════════════════════════════
+   INFO PANEL + STATUS UPDATES
+═════════════════════════════════════════════ */
+function setInfoForTrack(t) {
+  $('infName').textContent    = `${t.artist} — ${t.title}`;
+  $('infQuality').textContent = `${t.fmt} · ${t.spec}`;
+  $('infKbps').textContent    = t.kbps;
+  const b = $('infBadge'); b.textContent = t.fmt.toUpperCase(); b.className = 'inf-badge';
+  $('infSource').innerHTML    = 'MP3 · Local library<br>Web Audio chain active';
+}
+
+function setInfoForStation(st) {
+  $('infName').textContent    = st.name;
+  $('infQuality').textContent = `${st.genre} · ${st.country}`;
+  $('infKbps').textContent    = `${st.format} · Live stream`;
+  const b = $('infBadge'); b.textContent = st.format.toUpperCase(); b.className = 'inf-badge radio';
+  $('infSource').innerHTML    = `${st.format} · Internet Radio<br>${st.country}`;
+  $('radioFreqBig').textContent = st.name.slice(0, 10).toUpperCase();
+  $('radioBandBig').textContent = st.format;
+  $('radioStnBig').textContent  = st.name;
+  $('infTime').textContent  = '--:--';
+  $('infRemain').textContent = 'Live';
+  $('infProgFill').style.width = '0%';
+  $('progFill').style.width    = '0%';
+  $('progLeft').textContent    = st.format;
+  $('progRight').textContent   = 'LIVE';
+}
+
+function syncTimeUI() {
+  const audio = S.mode === 'radio' ? radioAudio : playerAudio;
+  const cur = audio.currentTime || 0;
+  const dur = audio.duration;
+  $('infTime').textContent    = fmt(cur);
+  $('infRemain').textContent  = Number.isFinite(dur) ? `-${fmt(dur - cur)}` : '--:--';
+  const pct = Number.isFinite(dur) && dur > 0 ? cur / dur : 0;
+  $('infProgFill').style.width = pct * 100 + '%';
+  $('progFill').style.width    = pct * 100 + '%';
+  $('progLeft').textContent    = fmt(cur);
+  $('progRight').textContent   = Number.isFinite(dur) ? fmt(dur) : '--:--';
+  $('progTrack').style.setProperty('--prog-pct', pct * 100 + '%');
+}
+
+function updateLEDs(ledType) {
+  ['ledA', 'ledB', 'ledC'].forEach(id => $(id).className = 'led');
+  if (ledType === 'g') $('ledA').className = 'led g';
+  if (ledType === 'a') $('ledA').className = 'led a';
+  if (ledType === 'r') $('ledA').className = 'led r';
+  const sl = $('statusLed'); sl.className = 'status-led';
+  if (ledType === 'g') sl.classList.add('on');
+}
+
+function setStatus(txt, ledType) {
+  $('topStatusTxt').textContent = txt;
+  updateLEDs(ledType);
+}
+
+/* ═════════════════════════════════════════════
+   PLAYER
+═════════════════════════════════════════════ */
+function loadTrack(idx) {
+  S.trackIdx  = ((idx % TRACKS.length) + TRACKS.length) % TRACKS.length;
+  const t = TRACKS[S.trackIdx];
+  playerAudio.src = t.src;
+  playerAudio.load();
+  setInfoForTrack(t);
+  syncTimeUI();
+}
+
+async function playPlayer() {
+  initAudio();
+  if (S.sourceType !== 'player') {
+    chainConnect(ensurePlayerSrc()); S.sourceType = 'player';
+  }
+  await safeResume();
+  masterGain.gain.value = S.volume / 100;
+  try {
+    await playerAudio.play();
+    S.playing = true;
+    $('playIcon').style.display  = 'none';
+    $('pauseIcon').style.display = '';
+    $('btnPlay').classList.add('playing');
+    setStatus('PLAYING', 'g');
+    setTrackOverlay(true);
+  } catch {
+    setStatus('FILE MISSING', 'a');
+  }
+}
+
+function pausePlayer() {
+  playerAudio.pause();
+  S.playing = false;
+  $('playIcon').style.display  = '';
+  $('pauseIcon').style.display = 'none';
+  $('btnPlay').classList.remove('playing');
+  setStatus('PAUSED', 'a');
+}
+
+function stopAll() {
+  playerAudio.pause();
+  radioAudio.pause();
+  if (Number.isFinite(playerAudio.duration)) playerAudio.currentTime = 0;
+  S.playing = false;
+  $('playIcon').style.display  = '';
+  $('pauseIcon').style.display = 'none';
+  $('btnPlay').classList.remove('playing');
+  setStatus('STOPPED', '');
+  syncTimeUI();
+}
+
+/* ═════════════════════════════════════════════
+   RADIO
+═════════════════════════════════════════════ */
+async function loadStation(idx, autoplay = true) {
+  if (!S.stations.length) return;
+  S.stationIdx = ((idx % S.stations.length) + S.stations.length) % S.stations.length;
+  const st = S.stations[S.stationIdx];
+  setInfoForStation(st);
+  buildStationUI();
+  radioAudio.src = st.url;
+  radioAudio.load();
+  if (!autoplay) return;
+  initAudio();
+  if (S.sourceType !== 'radio') { chainConnect(ensureRadioSrc()); S.sourceType = 'radio'; }
+  await safeResume();
+  masterGain.gain.value = S.volume / 100;
+  try {
+    await radioAudio.play();
+    setStatus('RADIO', 'g');
+  } catch {
+    setStatus('STREAM ERROR', 'a');
+  }
+}
+
+function radioScanTo(dir) {
+  if (S.scanAnim || !S.stations.length) return;
+  const toIdx = ((S.stationIdx + dir + S.stations.length) % S.stations.length);
+  loadStation(toIdx, S.mode === 'radio');
+}
+
+function buildStationUI() {
+  const overlay = $('radioOverlay');
+  const old = overlay.querySelector('.station-list-overlay');
+  if (old) old.remove();
+  const list = document.createElement('div');
+  list.className = 'station-list-overlay';
+  S.stations.forEach((st, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'stn-btn' + (idx === S.stationIdx ? ' active' : '');
+    btn.textContent = `${st.name} · ${st.country} · ${st.genre}`;
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      S.stationIdx = idx;
+      buildStationUI();
+      loadStation(idx, true);
+    });
+    list.appendChild(btn);
+  });
+  overlay.appendChild(list);
+}
+
+/* ═════════════════════════════════════════════
+   RECORD
+═════════════════════════════════════════════ */
+async function setupMic() {
+  if (S.micStream) return true;
+  try {
+    S.micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    initAudio();
+    micSrc = audioCtx.createMediaStreamSource(S.micStream);
+    S.mediaRecorder = new MediaRecorder(S.micStream);
+    S.mediaRecorder.ondataavailable = e => { if (e.data.size > 0) S.recordChunks.push(e.data); };
+    S.mediaRecorder.onstop = () => {
+      const blob = new Blob(S.recordChunks, { type: S.mediaRecorder.mimeType || 'audio/webm' });
+      S.recordChunks = [];
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `ius-recording-${Date.now()}.webm`;
+      a.click(); URL.revokeObjectURL(url);
+    };
+    return true;
+  } catch {
+    setStatus('MIC DENIED', 'r'); return false;
+  }
+}
+
+async function startRecording() {
+  const ok = await setupMic(); if (!ok) return;
+  await safeResume();
+  if (S.sourceType !== 'mic') { chainConnect(micSrc); S.sourceType = 'mic'; }
+  masterGain.gain.value = S.volume / 100;
+  if (S.mediaRecorder && S.mediaRecorder.state !== 'recording') {
+    S.mediaRecorder.start();
+    S.recording = true;
+    $('recDotOverlay').classList.add('show');
+    $('hwRecBtn').classList.add('armed');
+    setStatus('RECORDING', 'r');
+    $('infName').textContent    = `REC_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
+    $('infQuality').textContent = 'Browser audio capture · Live';
+    $('infKbps').textContent    = 'WebM lossless';
+    const b = $('infBadge'); b.textContent = 'REC'; b.className = 'inf-badge rec';
+  }
+}
+
+function stopRecording() {
+  if (S.mediaRecorder && S.mediaRecorder.state === 'recording') {
+    S.mediaRecorder.stop(); S.recording = false;
+    $('recDotOverlay').classList.remove('show');
+    $('hwRecBtn').classList.remove('armed');
+    setStatus('STANDBY', '');
+  }
+}
+
+/* ═════════════════════════════════════════════
+   MODE SWITCHING
+═════════════════════════════════════════════ */
+function switchMode(mode) {
+  const prev = S.mode;
+  if (prev === 'player') pausePlayer();
+  if (prev === 'radio')  { radioAudio.pause(); $('radioOverlay').classList.remove('show'); clearInterval(S.radioClock); S.radioClock = null; }
+  if (prev === 'record') stopRecording();
+
+  S.mode = mode;
+  document.body.classList.remove('mode-player', 'mode-radio', 'mode-record');
+  document.body.classList.add(`mode-${mode}`);
+  [$('tabPlayer'), $('tabRadio'), $('tabRecord')].forEach(t => t.classList.remove('active'));
+  $('btnRadioMode').classList.remove('mode-lit');
+
+  if (mode === 'player') {
+    $('tabPlayer').classList.add('active');
+    $('radioOverlay').classList.remove('show');
+    $('dawLabelLeft').textContent  = 'TRACKS 1–5';
+    $('dawLabelRight').textContent = 'DAW MONITOR OVERLAY';
+    setTrackOverlay(true);
+    if (audioCtx && S.sourceType !== 'player') { chainConnect(ensurePlayerSrc()); S.sourceType = 'player'; }
+    setInfoForTrack(TRACKS[S.trackIdx]);
+    setStatus('PLAYER', 'a');
+    syncTimeUI();
+  } else if (mode === 'radio') {
+    $('tabRadio').classList.add('active');
+    $('btnRadioMode').classList.add('mode-lit');
+    $('radioOverlay').classList.add('show');
+    $('waveWrap').classList.remove('show');
+    setTrackOverlay(false);
+    dawTracks.style.opacity = '0';
+    $('dawLabelLeft').textContent  = 'INTERNET RADIO';
+    $('dawLabelRight').textContent = 'FM / DAB+';
+    if (audioCtx && S.sourceType !== 'radio') { chainConnect(ensureRadioSrc()); S.sourceType = 'radio'; }
+    if (S.stations.length) setInfoForStation(S.stations[S.stationIdx]);
+    else { $('infName').textContent = 'Loading stations…'; }
+    setStatus('RADIO', 'a');
+    const rclk = () => {
+      const d = new Date();
+      $('infTime').textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    };
+    rclk(); S.radioClock = setInterval(rclk, 30000);
+  } else if (mode === 'record') {
+    $('tabRecord').classList.add('active');
+    $('radioOverlay').classList.remove('show');
+    $('dawLabelLeft').textContent  = 'RECORDING INPUT';
+    $('dawLabelRight').textContent = 'LIVE MONITOR';
+    setTrackOverlay(false);
+    $('waveWrap').classList.add('show');
+    $('infName').textContent    = 'Ready to record';
+    $('infQuality').textContent = 'Click Arm button to start';
+    $('infKbps').textContent    = 'WebM audio · Browser';
+    $('infSource').innerHTML    = 'Line In / XLR · Browser capture<br>MediaRecorder API';
+    setStatus('RECORD', '');
+  }
+}
+
+/* ═════════════════════════════════════════════
+   MAIN KNOB (Volume)
+═════════════════════════════════════════════ */
+(function initKnob() {
+  const knob = $('mainKnob');
+  let dragging = false, startY = 0, startA = 0;
+  function setAngle(a) {
+    S.knobAngle = clamp(a, -150, 150);
+    knob.style.transform = `rotate(${S.knobAngle}deg)`;
+    S.volume = Math.round((S.knobAngle + 150) / 300 * 100);
+    if (masterGain) masterGain.gain.value = S.volume / 100;
+  }
+  knob.addEventListener('mousedown',  e => { dragging = true; startY = e.clientY; startA = S.knobAngle; document.body.style.cursor = 'ns-resize'; e.preventDefault(); });
+  document.addEventListener('mousemove', e => { if (dragging) setAngle(startA + (startY - e.clientY) * 1.25); });
+  document.addEventListener('mouseup',   () => { if (dragging) { dragging = false; document.body.style.cursor = ''; } });
+  knob.addEventListener('touchstart',  e => { dragging = true; startY = e.touches[0].clientY; startA = S.knobAngle; e.preventDefault(); }, { passive: false });
+  document.addEventListener('touchmove', e => { if (dragging) { setAngle(startA + (startY - e.touches[0].clientY) * 1.25); e.preventDefault(); } }, { passive: false });
+  document.addEventListener('touchend', () => { dragging = false; });
+  knob.addEventListener('wheel', e => { setAngle(S.knobAngle - e.deltaY * 0.5); e.preventDefault(); }, { passive: false });
+  setAngle(S.knobAngle);
+})();
+
+/* ═════════════════════════════════════════════
+   PROGRESS BAR SEEK
+═════════════════════════════════════════════ */
+$('progTrack').addEventListener('click', e => {
+  if (S.mode !== 'player' || !Number.isFinite(playerAudio.duration)) return;
+  const rect = $('progTrack').getBoundingClientRect();
+  playerAudio.currentTime = ((e.clientX - rect.left) / rect.width) * playerAudio.duration;
+});
+
+/* ═════════════════════════════════════════════
+   BUTTON EVENTS
+═════════════════════════════════════════════ */
+function press(el) { el.classList.add('pressed'); setTimeout(() => el.classList.remove('pressed'), 130); }
+
+$('btnPlay').addEventListener('click', () => {
+  press($('btnPlay'));
+  if (S.mode === 'radio')  { if (S.stations.length) loadStation(S.stationIdx, true); }
+  else if (S.mode === 'record') startRecording();
+  else S.playing ? pausePlayer() : playPlayer();
+});
+
+$('btnStop').addEventListener('click',  () => { press($('btnStop')); stopAll(); });
+
+$('btnPrev').addEventListener('click', () => {
+  press($('btnPrev'));
+  if (S.mode === 'radio') radioScanTo(-1);
+  else { const wp = S.playing; playerAudio.currentTime > 3 ? (playerAudio.currentTime = 0) : (stopAll(), loadTrack(S.trackIdx - 1)); if (wp) playPlayer(); }
+});
+
+$('btnNext').addEventListener('click', () => {
+  press($('btnNext'));
+  if (S.mode === 'radio') radioScanTo(+1);
+  else { const wp = S.playing; stopAll(); loadTrack(S.trackIdx + 1); if (wp) playPlayer(); }
+});
+
+$('btnScanPrev').addEventListener('click', () => { press($('btnScanPrev')); S.mode === 'radio' ? radioScanTo(-1) : (() => { const wp = S.playing; stopAll(); loadTrack(S.trackIdx - 1); if (wp) playPlayer(); })(); });
+$('btnScanNext').addEventListener('click', () => { press($('btnScanNext')); S.mode === 'radio' ? radioScanTo(+1) : (() => { const wp = S.playing; stopAll(); loadTrack(S.trackIdx + 1); if (wp) playPlayer(); })(); });
+
+$('btnRadioMode').addEventListener('click', () => switchMode('radio'));
+$('tabPlayer').addEventListener('click',    () => switchMode('player'));
+$('tabRadio').addEventListener('click',     () => switchMode('radio'));
+$('tabRecord').addEventListener('click',    () => switchMode('record'));
+
+$('btnShuffle').addEventListener('click', () => { press($('btnShuffle')); const wp = S.playing; stopAll(); loadTrack(Math.floor(Math.random() * TRACKS.length)); if (wp) playPlayer(); });
+$('btnRepeat').addEventListener('click',  () => press($('btnRepeat')));
+
+$('hwRecBtn').addEventListener('click',  () => { S.mode !== 'record' ? switchMode('record') : (!S.recording && startRecording()); });
+$('hwStopBtn').addEventListener('click', () => { S.recording ? stopRecording() : stopAll(); });
+
+/* ═════════════════════════════════════════════
+   AUDIO EVENTS
+═════════════════════════════════════════════ */
+playerAudio.addEventListener('timeupdate',    syncTimeUI);
+playerAudio.addEventListener('loadedmetadata', syncTimeUI);
+playerAudio.addEventListener('ended', () => {
+  S.playing = false;
+  $('playIcon').style.display = ''; $('pauseIcon').style.display = 'none';
+  $('btnPlay').classList.remove('playing');
+  loadTrack(S.trackIdx + 1);
+  playPlayer();
+});
+playerAudio.addEventListener('error', () => setStatus('FILE MISSING', 'r'));
+radioAudio.addEventListener('error',  () => setStatus('STREAM ERROR', 'r'));
+
+/* ═════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+═════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') return;
+  switch (e.code) {
+    case 'Space':      e.preventDefault(); S.playing ? pausePlayer() : playPlayer(); break;
+    case 'ArrowRight': if (S.mode === 'radio') radioScanTo(+1); else { const wp = S.playing; stopAll(); loadTrack(S.trackIdx + 1); if (wp) playPlayer(); } break;
+    case 'ArrowLeft':  if (S.mode === 'radio') radioScanTo(-1); else { const wp = S.playing; playerAudio.currentTime > 3 ? (playerAudio.currentTime = 0) : (stopAll(), loadTrack(S.trackIdx - 1)); if (wp) playPlayer(); } break;
+    case 'KeyP':       switchMode('player');  break;
+    case 'KeyR':       switchMode('radio');   break;
+    case 'KeyD':       switchMode('record');  break;
+    case 'KeyT':       setTrackOverlay(!S.showTracks); break;
+  }
+});
+
+/* ═════════════════════════════════════════════
+   STATIONS — fetch file or use embedded fallback
+═════════════════════════════════════════════ */
+async function initStations() {
+  const embedded = [
+    { name:'BBC Radio 6 Music',   country:'UK',  genre:'Alternative', format:'AAC', url:'https://lstn.lv/bbcradio.m3u8?station=bbc_6music' },
+    { name:'Classic FM',          country:'UK',  genre:'Classical',   format:'MP3', url:'https://media-ice.musicradio.com/ClassicFMMP3' },
+    { name:'KEXP 90.3 FM',        country:'USA', genre:'Indie',       format:'AAC', url:'https://kexp.streamguys1.com/kexp128.aac' },
+    { name:'NTS 1',               country:'UK',  genre:'Eclectic',    format:'MP3', url:'https://stream-relay-geo.ntslive.net/stream' },
+    { name:'SomaFM Groove Salad', country:'USA', genre:'Ambient',     format:'MP3', url:'https://ice1.somafm.com/groovesalad-128-mp3' },
+  ];
+  try {
+    const r = await fetch('assets/data/stations.json');
+    S.stations = r.ok ? await r.json() : embedded;
+  } catch { S.stations = embedded; }
+  buildStationUI();
+  if (S.mode === 'radio') setInfoForStation(S.stations[S.stationIdx]);
+}
+
+/* ═════════════════════════════════════════════
+   BOOT
+═════════════════════════════════════════════ */
+function boot() {
+  document.body.classList.add('mode-player');
+  loadTrack(S.trackIdx);
+  applyPreset('flat');
+  initStations();
+
+  // LED startup flash sequence
+  setTimeout(() => $('ledA').className = 'led r', 120);
+  setTimeout(() => $('ledB').className = 'led r', 240);
+  setTimeout(() => $('ledC').className = 'led r', 360);
+  setTimeout(() => { $('ledA').className = 'led'; $('ledB').className = 'led'; $('ledC').className = 'led'; }, 800);
+  setTimeout(() => { setStatus('PLAYER', 'a'); $('ledA').className = 'led a'; }, 1000);
+}
+
+boot();
+
+})(); // end IIFE
+</script>
+</body>
+</html>
