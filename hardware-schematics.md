@@ -1,4 +1,4 @@
-# IUS DRRP Desktop — hardware schematics (updated system level)
+# IUS DRRP Desktop hardware schematics (updated system level)
 
 These are still **block-level engineering schematics**, not PCB CAD exports.
 
