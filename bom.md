@@ -1,15 +1,4 @@
-# Revised BOM — IUS DRRP Desktop
-
-## BOM philosophy
-
-The original BOM was a concept list.  
-This revision separates:
-
-1. **baseline concept path**
-2. **builder-friendly path**
-3. **items that still need a final decision**
-
----
+# Revised BOM IUS DRRP Desktop
 
 ## A. Compute
 
