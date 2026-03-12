@@ -43,7 +43,6 @@ flowchart LR
 ### 4. Mixer / overlay view
 - shows 5 visible tracks
 - appears during EQ interaction or direct track-toggle action
-- intended to communicate live monitor state, not a full DAW replacement
 
 ## Control architecture
 
