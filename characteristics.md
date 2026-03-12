@@ -1,4 +1,4 @@
-# IUS DRRP Desktop — characteristics
+# IUS DRRP Desktop characteristics
 
 ## Product identity
 
