@@ -1,4 +1,6 @@
-
+<a href="LICENSE">
+  <img src="images/license-badge.png" alt="License badge" width="70">
+</a>
 
 ## Logic:
 I set out to create this device after realizing there wasn’t a truly simple recorder/playback unit that combined high-resolution audio, straightforward multitrack capability, and a hands-on physical EQ section. Maybe that sounds old-fashioned but I’ve always been drawn to equipment that feels direct and human.
@@ -203,3 +205,7 @@ assets included in or referenced by this repository.
 
 All such rights are reserved. Any use of protected brand features requires
 prior written permission from I/US Music®.
+
+<a href="LICENSE">
+  <img src="images/license-badge.png" alt="License badge" width="70">
+</a>
