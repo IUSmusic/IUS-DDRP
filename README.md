@@ -1,5 +1,5 @@
 <a href="LICENSE">
-  <img src="images/license-badge.png" alt="License badge" width="70">
+  <img src="./license-badge.png" alt="License badge" width="70">
 </a>
 
 
@@ -8,210 +8,141 @@
 ![SD](./SDS2.png)
 
 
-## Logic:
-I set out to create this device after realizing there wasn’t a truly simple recorder/playback unit that combined high-resolution audio, straightforward multitrack capability, and a hands-on physical EQ section. Maybe that sounds old-fashioned but I’ve always been drawn to equipment that feels direct and human.
-With that in mind, I began prototyping a system inspired by the character and tactile appeal of vintage audio equipment, but designed with modern, ultra-high-quality performance in mind. A portable version is also currently in development.
+# IUS DRRP Desktop
 
+**Repository:** IUS-DDRP  
+**Document baseline:** 30 June 2026  
+**Status:** realistic prototype architecture; not yet a production-certified product
 
-## Update:
-12 MARCH 2026
-- Replaced the text-only preview with a working demo.
-- Added a real front-end EQ model with 15 bands and plotted response.
-- Added presets, routing controls, mode switching, and a track overlay.
-- Added builder docs, BOM update, EQ DSP spec, and implementation plan.
+IUS DRRP Desktop is a tactile, high-fidelity recorder, player, monitor controller and offline-capable radio platform. The design combines a dedicated real-time audio path with a Linux application layer, premium physical controls, an optically bonded touchscreen, internal loudspeakers, balanced studio I/O and broad phone, tablet, TV and computer connectivity.
 
-## IUS DDRP Demo
-https://iusmusic.github.io/IUS-DDRP/
+The architecture is deliberately split into two domains:
 
+- a deterministic audio domain for monitoring, EQ, routing, conversion and protection
+- an application domain for the interface, library, networking, recording management and updates
 
-## IUS DRRP Prototype Demo
-https://iusmusic.github.io/IUS-DRRP/
-Standalone HTML Preview:
-https://iusmusic.github.io/DRRPDEMO/
+This separation is the main engineering decision behind the low-latency target. A general-purpose Linux computer is not allowed to sit in the direct monitoring loop.
 
+## Design priorities
 
-IUS DRRP Desktop is a mains-powered high-fidelity playback and recording device developed as the desktop version of the IUS DRRP concept. It is designed for studio, home, and creative audio use, combining tactile hardware control, upgraded audio architecture, visible interface feedback, and offline-first operation.
+- transparent playback and recording
+- wired monitoring with near-immediate response
+- responsive touch and physical controls
+- accessible operation without relying on touch alone
+- connection to phones, tablets, computers, TVs, active monitors and studio equipment
+- modular internal boards that can be serviced or upgraded
+- mains operation with a continuity battery
+- quiet thermal behaviour
+- premium, durable materials
+- an offline-first local workflow
 
-The desktop version is intended as the more advanced and premium model in the DRRP range. Compared with the portable version, it offers improved audio quality, larger physical controls, integrated speaker architecture, expanded monitoring capability, and a more complete recording and playback workflow.
+“No latency” is not physically possible. The project therefore defines measurable latency budgets:
 
-## Official Product Name
-IUS DRRP
+- analog input to wired headphone monitor: **5 ms or less target**
+- physical control to audible parameter change: **10 ms or less target**
+- touch to visible response: **50 ms or less target**
+- wireless latency: protocol-dependent and not used for critical live monitoring
 
+## Reference hardware direction
 
+- Raspberry Pi Compute Module 5 for UI, storage and network services
+- XMOS XU316 USB Audio Class bridge for deterministic host audio transport
+- Analog Devices ADAU1467 DSP for EQ, routing, crossover, limiting and monitoring
+- AKM AK4191 + AK4499EX flagship stereo playback path
+- ESS ES9823PRO stereo capture path
+- THAT1580/5173 digitally controlled microphone preamplifiers
+- TI OPA1612 line stages and OPA1622/INA1620 headphone stage
+- TI TPA3255 Class-D amplification for the internal speaker system
+- 10.1-inch 1920 × 1200 optically bonded capacitive display
+- NXP IW612-class Wi-Fi 6 / Bluetooth 5.4 radio module for the production path
+- 8-series LiFePO4 continuity battery with monitored power-path control
+- CNC-machined and formed aluminum enclosure with constrained-layer damping
+- isolated left/right speaker chambers and an RF-transparent antenna window
 
-## Core Purpose
-IUS DRRP Desktop is designed as a self-contained audio instrument for:
+The reference parts are engineering selections, not purchase guarantees. Every active component must pass availability, lifecycle, licensing and second-source review before an EVT build.
 
-- high-quality local playback
-- high-quality recording
-- monitoring
-- offline radio compatibility
-- tactile physical interaction
-- studio and home listening
+## Product scope
 
+The baseline product is **stereo-first**. It provides:
 
-## Main Characteristics
+- two balanced mic/line inputs
+- two balanced line outputs
+- dedicated headphone monitoring
+- USB Audio Class 2
+- optical and coaxial S/PDIF
+- MIDI input/output
+- HDMI display output
+- an optional licensed HDMI eARC input module
+- local playback and recording
+- 15-band tactile EQ
+- five-track project and monitor view
+- internal stereo loudspeakers
+- remote control from a responsive browser interface
 
-- mains-powered desktop unit
-- internal backup battery with approximately 1 hour of operation under heavy use
-- upgraded audio path based on HiFiBerry DAC+ ADC HAT
-- built-in speaker system
-- side speakers positioning
-- enhanced top-channel spatial speaker design direction
-- physical EQ control
-- dedicated display-based monitoring interface
-- offline concept
+The five-track interface is a project and monitoring workflow. It does not imply five simultaneous analog microphone inputs in the baseline hardware.
 
+## Documents
 
+All project documents are kept in the repository root.
 
-## Audio Architecture
+- [PRODUCT_REQUIREMENTS.md](./PRODUCT_REQUIREMENTS.md) — measurable product requirements and acceptance targets
+- [SYSTEM_ARCHITECTURE.md](./SYSTEM_ARCHITECTURE.md) — system blocks, signal flow, clocking and latency
+- [HARDWARE_ARCHITECTURE.md](./HARDWARE_ARCHITECTURE.md) — detailed electrical, mechanical and material plan
+- [INTERFACE_SPECIFICATION.md](./INTERFACE_SPECIFICATION.md) — physical, wireless and software interfaces
+- [EQ_DSP_SPEC.md](./EQ_DSP_SPEC.md) — EQ, routing, crossover, limiter and metering contract
+- [SOFTWARE_ARCHITECTURE.md](./SOFTWARE_ARCHITECTURE.md) — services, UI, storage, updates and security
+- [BOM.md](./BOM.md) — reference prototype bill of materials and alternates
+- [PROTOTYPE_PLAN.md](./PROTOTYPE_PLAN.md) — staged build plan and engineering gates
+- [TEST_AND_VALIDATION.md](./TEST_AND_VALIDATION.md) — audio, latency, thermal, reliability and accessibility tests
+- [COMPLIANCE_AND_SAFETY.md](./COMPLIANCE_AND_SAFETY.md) — regulatory, battery, radio and product-security plan
+- [BUILD_NOTES.md](./BUILD_NOTES.md) — browser demo instructions and limitations
+- [SOURCES.md](./SOURCES.md) — primary component and regulatory references
+- [CHANGELOG.md](./CHANGELOG.md) — package changes
 
-The desktop version is based around an upgraded dedicated DAC/ADC system using a HiFiBerry DAC+ ADC HAT. The purpose of this architecture is to provide a cleaner and more reliable playback and recording path than standard onboard audio.
+## Browser demo
 
-## Expected audio features include:
+Open `index.html` directly in a current browser.
 
-hi-fi playback
-line input recording
-line output
-headphone monitoring
-dedicated analogue audio path
-transparent signal flow
-improved studio and home recording/playback quality
-Display and Interface
+The demo is self-contained for its generated local test audio and visual interaction. Internet radio still requires a network connection, and microphone recording requires browser permission.
 
-The main screen is designed to operate in multiple visual modes.
-Default screen mode:
+Published demonstrations:
 
-## EQ graph display
-live signal and monitoring feedback
-playback and recording status information
+- https://iusmusic.github.io/IUS-DDRP/
+- https://iusmusic.github.io/IUS-DRRP/
+- https://iusmusic.github.io/DRRPDEMO/
 
+The browser demo is a user-interface prototype. It is not evidence that the final hardware has met the audio, latency, battery, EMC or safety targets in this repository.
 
-## Track mode:
+## Current engineering decisions
 
-when the user slides through the interface, the display changes from EQ view to DAW-style track view
-the desktop version supports up to 5 visible tracks
-tracks are intended for:
-recording
-Editing
-playback
-monitoring
+1. The direct monitoring path remains operational if Linux is restarting.
+2. The audio DSP owns real-time gain, EQ, crossover, limiter and mute functions.
+3. The control microcontroller owns power sequencing, safe mute, watchdogs and battery state.
+4. The Compute Module owns the display, library, networking, project files and remote interface.
+5. Built-in speakers are internally active and protected; balanced line outputs remain the preferred path to external studio monitors.
+6. HDMI eARC, AirPlay, Google Cast, Spotify Connect, aptX and LDAC are certification or licensing workstreams, not assumed open features.
+7. The metal enclosure includes an RF window and separate antenna volume.
+8. Battery mode limits amplifier power to protect runtime, temperature and cell life.
 
-This track view is designed to give the user a more direct, hardware-based recording workflow without requiring a traditional software DAW interface for basic operations.
+## Official product name
 
+**IUS DRRP Desktop**
 
-## Control System
-
-IUS DRRP Desktop uses tactile physical controls rather than touchscreen-first interaction.
-
-Control philosophy:
-low-latency hardware response
-visible UI status
-direct manipulation of audio functions
-physical EQ access
-simple navigation between playback, recording, monitoring, and radio functions
-Controls are intended to include:
-transport controls
-track navigation
-slider-based interaction
-EQ controls
-radio access
-playback and recording management
-
-
-## Speaker Design:
-
-The desktop version includes built-in speakers.
-Speaker layout direction:
-
-side-mounted speakers architecture
-enhanced top-channel spatial audio design direction
-intended emphasis on wider and more immersive desktop listening
-integrated monitoring and standalone playback capability without requiring external speakers for basic operation
-
-
-## Power System:
-
-direct mains power
-internal backup battery
-approximately 1 hour battery operation under heavy use
-intended mainly as a backup/mobile continuity feature rather than full portable operation
-
-
-## Product Positioning
-The desktop version is positioned as the more complete and higher-spec version of the DRRP platform.
-
-## Portable version:
-
-more limited
-designed to attract attention and provide a compact form factor
-
-
-## Desktop version:
-
-higher-quality audio path
-more capable playback and recording architecture
-more complete monitoring workflow
-physical EQ
-built-in speaker system
-better suited for studio and home use
-
-IUS DRRP Desktop combines:
-- dedicated hi-fi playback
-- recording capability
-- offline radio compatibility
-- physical EQ
-- integrated speaker design
-- visible DAW-style track feedback
-- a tactile retro-modern hardware interface
-
-## Current design direction includes:
-
-Raspberry Pi 4 class compute platform
-HiFiBerry DAC+ ADC HAT
-dedicated display interface
-local/offline playback workflow
-physical transport and EQ controls
-built-in speaker architecture
-internal power management
-local monitoring and recording workflow
-radio integration compatibility
-
-
-## Use Cases
-
-studio playback
-home listening
-home recording
-quick multitrack-style monitoring
-offline radio listening
-local playback from stored media
-desktop audio experimentation and creative workflow
-
-## Project Status
-
-IUS DRRP Desktop is currently in concept and prototype development stage.
-
-This version represents the desktop flagship direction of the DRRP system and is intended to serve as the more advanced hardware platform for future development, demonstration, and possible small-batch production.
+The repository name remains **IUS-DDRP** for continuity.
 
 ## License
 
-
-## Copyright (c) 2026 Pezhman Farhangi
+Copyright (c) 2026 Pezhman Farhangi  
 I/US Music
-This project includes the I/US-style source-available license text in LICENSE.
 
-## Trademark and Brand Notice
+This project includes the I/US source-available license in `LICENSE`.
+
+## Trademark and brand notice
 
 “IUS” and “I/US Music®” are proprietary brand identifiers of I/US Music®.
 
-This license does not grant any right to use the I/US, IUS name, the I/US Music®
-name, official logos, visual identity, artwork, images, music, or other brand
-assets included in or referenced by this repository.
-
-All such rights are reserved. Any use of protected brand features requires
-prior written permission from I/US Music®.
+The license does not grant a right to use the I/US or IUS name, the I/US Music® name, official logos, visual identity, artwork, images, music or other brand assets included in or referenced by this repository. Any use of protected brand features requires prior written permission from I/US Music®.
 
 <a href="LICENSE">
-  <img src="images/license-badge.png" alt="License badge" width="70">
+  <img src="./license-badge.png" alt="License badge" width="70">
 </a>
