@@ -5,7 +5,7 @@
 
 
 ![SD](./SD1.png)
-![SD](./SDS1.png)
+![SD](./SDS2.png)
 
 
 ## Logic:
