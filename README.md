@@ -2,15 +2,16 @@
   <img src="./license-badge.png" alt="License badge" width="70">
 </a>
 
-
+# IUS DDRP Desktop
 ![DRRP](./DDRP1.png)
 ![SD](./SD1.png)
 ![SD](./SDS2.png)
+
+
+# IUS DRRP Mobile: https://github.com/IUSmusic/IUS-DRRP
 ![DRRP](./DRRP.png)
 
 
-
-# IUS DRRP Desktop
 
 **Repository:** IUS-DDRP  
 **Document baseline:** 30 June 2026  
